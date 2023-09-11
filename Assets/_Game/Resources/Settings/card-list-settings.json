@@ -1,0 +1,12 @@
+{
+  "cards": [
+    {
+      "uid": 1,
+      "type": 0,
+      "name": "Test Name",
+      "description": "Test description.",
+      "attack": 100,
+      "defense": 200
+    }
+  ]
+}
