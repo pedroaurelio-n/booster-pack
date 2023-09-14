@@ -1,9 +1,13 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 public class GameSession : MonoBehaviour
 {
-    [SerializeField] JsonLoaderTest jsonLoaderTest;
+    [SerializeField] GameLifetimeScope lifetimeScope;
+    
+    [SerializeField] SpawnCardUIView spawnCardUIView;
+    [SerializeField] CardUIView cardUIViewPrefab;
     
     SettingsManager _settingsManager;
 
@@ -12,7 +16,11 @@ public class GameSession : MonoBehaviour
         _settingsManager = new SettingsManager();
         _settingsManager.InitializeSettings();
 
-        jsonLoaderTest.CardListSettings = _settingsManager.CardListSettings.Instance;
-        jsonLoaderTest.LogCard();
+        GameInstaller installer = new(
+            _settingsManager.CardListSettings.Instance,
+            spawnCardUIView,
+            cardUIViewPrefab
+        );
+        LifetimeScope scope = lifetimeScope.CreateChild(installer);
     }
 }
