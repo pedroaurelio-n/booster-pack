@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 
-public class CardManagerController : IStartable
+public class CardManagerController
 {
     readonly ICardManagerModel _model;
     readonly SpawnCardUIView _view;
@@ -21,7 +21,7 @@ public class CardManagerController : IStartable
         _cardUIViewPrefab = cardUIViewPrefab;
     }
 
-    void IStartable.Start ()
+    public void Initialize ()
     {
         AddViewListeners();
     }
@@ -53,9 +53,4 @@ public class CardManagerController : IStartable
     }
 
     void HandleSpawnClick () => CreateNewCard();
-
-    public void Dispose ()
-    {
-        RemoveViewListeners();
-    }
 }

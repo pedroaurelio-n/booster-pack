@@ -22,13 +22,13 @@ public class GameInstaller : IInstaller
     {
         builder.RegisterInstance(_settings);
 
+        builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
         builder.Register<ICardManagerModel, CardManagerModel>(Lifetime.Scoped);
-        builder.Register<ICardModel, CardModel>(Lifetime.Transient);
-
-        builder.RegisterComponentInNewPrefab(_cardUIViewPrefab, Lifetime.Transient);
-        builder.RegisterComponent(_spawnCardUIView);
         
-        builder.RegisterEntryPoint<CardManagerController>(Lifetime.Scoped);
-        builder.RegisterEntryPoint<CardController>(Lifetime.Transient);
+        builder.Register<GameController>(Lifetime.Scoped);
+        builder.Register<CardManagerController>(Lifetime.Scoped);
+
+        builder.RegisterComponentInNewPrefab(_cardUIViewPrefab, Lifetime.Scoped);
+        builder.RegisterComponent(_spawnCardUIView);
     }
 }

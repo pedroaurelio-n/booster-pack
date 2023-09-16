@@ -6,7 +6,12 @@ public class SettingsManager
         private set;
     }
 
-    public void InitializeSettings ()
+    public SettingsManager ()
+    {
+        InitializeSettings();
+    }
+
+    void InitializeSettings ()
     {
         CardListSettings = new SettingsProvider<ICardListSettings, CardListSettings>("card-list-settings");
     }
