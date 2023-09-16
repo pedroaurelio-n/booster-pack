@@ -16,18 +16,18 @@ public class CardSettings : ICardSettings
     public string Description { get; }
     
     [JsonProperty]
-    public int Attack { get; }
+    public int? Attack { get; }
     
     [JsonProperty]
-    public int Defense { get; }
+    public int? Defense { get; }
 
     public CardSettings (
         int uid,
         CardType type,
         string name,
         string description,
-        int attack,
-        int defense
+        int? attack,
+        int? defense
     )
     {
         Uid = uid;

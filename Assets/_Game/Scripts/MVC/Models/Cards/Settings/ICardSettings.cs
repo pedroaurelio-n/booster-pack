@@ -4,6 +4,6 @@ public interface ICardSettings
     CardType Type { get; }
     string Name { get; }
     string Description { get; }
-    int Attack { get; }
-    int Defense { get; }
+    int? Attack { get; }
+    int? Defense { get; }
 }

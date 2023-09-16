@@ -4,39 +4,35 @@
       "uid": 0,
       "type": 0,
       "name": "Destroyer",
-      "description": "Test description.",
+      "description": "test desc",
       "attack": 100,
       "defense": 200
     },
     {
       "uid": 1,
-      "type": 1,
-      "name": "+Attack",
-      "description": "Test description.",
+      "type": 0,
+      "name": "Conqueror",
+      "description": "test desc",
       "attack": 100,
       "defense": 200
     },
     {
       "uid": 2,
-      "type": 0,
-      "name": "The Mighty",
-      "description": "Test description.",
-      "attack": 100,
-      "defense": 200
+      "type": 1,
+      "name": "Plus Attack",
+      "description": "test desc"
     },
     {
       "uid": 3,
-      "type": 0,
-      "name": "Conqueror",
-      "description": "Test description.",
-      "attack": 100,
-      "defense": 200
+      "type": 1,
+      "name": "Void Call",
+      "description": "test desc"
     },
     {
       "uid": 4,
-      "type": 1,
-      "name": "Void Call",
-      "description": "Test description.",
+      "type": 0,
+      "name": "The Mighty",
+      "description": "test desc",
       "attack": 100,
       "defense": 200
     }
