@@ -1,5 +1,5 @@
 public interface ICardManagerModel
 {
-    ICardModel GetCardByUid (int uid);
-    ICardModel GetRandomCard ();
+    ICardSettings GetCardByUid (int uid);
+    ICardSettings GetRandomCard ();
 }

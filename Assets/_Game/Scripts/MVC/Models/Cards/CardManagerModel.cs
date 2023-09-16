@@ -11,17 +11,16 @@ public class CardManagerModel : ICardManagerModel
         _settings = settings;
     }
     
-    public ICardModel GetCardByUid (int uid)
+    public ICardSettings GetCardByUid (int uid)
     {
         ICardSettings cardSettings = _settings.Cards.FirstOrDefault(x => x.Uid == uid);
         if (cardSettings == default)
             throw new InvalidOperationException($"Couldn't find Uid {uid} in settings");
 
-        ICardModel cardModel = new CardModel(cardSettings);
-        return cardModel;
+        return cardSettings;
     }
 
-    public ICardModel GetRandomCard ()
+    public ICardSettings GetRandomCard ()
     {
         int randomUid = Random.Range(0, _settings.Cards.Count);
         return GetCardByUid(randomUid);

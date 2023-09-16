@@ -28,7 +28,7 @@ public class CardManagerController
 
     void CreateNewCard ()
     {
-        ICardModel cardModel = _model.GetRandomCard();
+        ICardModel cardModel = new CardModel(_model.GetRandomCard());
         _cardUIView = GetCardUIView();
 
         CardController cardController = new(cardModel, _cardUIView);
