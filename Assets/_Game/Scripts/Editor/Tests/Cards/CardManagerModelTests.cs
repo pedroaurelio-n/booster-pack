@@ -10,7 +10,9 @@ namespace GameTests.Cards.CardManager
         class BaseCardManagerModelTests
         {
             protected List<ICardSettings> Cards { get; private set; }
+            
             protected ICardListSettings Settings { get; private set; }
+            protected IRandomProvider RandomProvider { get; private set; }
             
             protected CardManagerModel Model { get; private set; }
 
@@ -18,10 +20,14 @@ namespace GameTests.Cards.CardManager
             public void Setup ()
             {
                 Settings = Substitute.For<ICardListSettings>();
+                RandomProvider = Substitute.For<IRandomProvider>();
 
                 Cards = new List<ICardSettings>();
 
-                Model = new CardManagerModel(Settings);
+                Model = new CardManagerModel(
+                    Settings,
+                    RandomProvider
+                );
             }
 
             protected void SetupCardList ()
@@ -77,6 +83,21 @@ namespace GameTests.Cards.CardManager
                 SetupCardList();
 
                 Assert.Throws<InvalidOperationException>(() => Model.GetCardByUid(UID));
+            }
+        }
+
+        class GetRandomCard : BaseCardManagerModelTests
+        {
+            [Test]
+            public void GetRandomCard_Returns_Correct_Card ()
+            {
+                CreateCard(0, CardType.Monster, "one");
+                CreateCard(1, CardType.Monster, "two");
+                ICardSettings expectedCard = CreateCard(2, CardType.Monster, "three");
+                SetupCardList();
+
+                RandomProvider.Range(0, Cards.Count).Returns(2);
+                Model.GetRandomCard();
             }
         }
     }
