@@ -6,12 +6,10 @@ public class GameLifetimeScope : LifetimeScope
 {
     public IGameModel GameModel { get; private set; }
     public GameController GameController { get; private set; }
+    public GameUIView GameUIView { get; private set; }
     
     public SettingsManager SettingsManager { get; private set; }
     public IRandomProvider RandomProvider { get; private set; }
-    
-    [SerializeField] SpawnCardUIView spawnCardUIView;
-    [SerializeField] CardUIView cardUIViewPrefab;
 
     protected override void Awake ()
     {
@@ -42,11 +40,12 @@ public class GameLifetimeScope : LifetimeScope
 
     void CreateInstaller (IContainerBuilder builder)
     {
+        GameUIView = GameObject.Instantiate(Resources.Load<GameUIView>("GameUIView"));
+        
         GameInstaller installer = new(
+            GameUIView,
             RandomProvider,
-            SettingsManager,
-            spawnCardUIView,
-            cardUIViewPrefab
+            SettingsManager
         );
         installer.Install(builder);
     }

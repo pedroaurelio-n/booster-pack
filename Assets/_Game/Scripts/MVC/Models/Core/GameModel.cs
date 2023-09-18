@@ -1,5 +1,3 @@
-using VContainer;
-
 public class GameModel : IGameModel
 {
     public ICardManagerModel CardManagerModel { get; private set; }

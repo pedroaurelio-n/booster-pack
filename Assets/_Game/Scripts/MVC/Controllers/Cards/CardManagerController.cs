@@ -1,24 +1,22 @@
-using System;
 using UnityEngine;
-using VContainer.Unity;
 
 public class CardManagerController
 {
     readonly ICardManagerModel _model;
-    readonly SpawnCardUIView _view;
-    readonly CardUIView _cardUIViewPrefab;
+    readonly GameUIView _gameUIView;
 
+    SpawnCardController _spawnCardController;
     CardUIView _cardUIView;
 
     public CardManagerController (
         ICardManagerModel model,
-        SpawnCardUIView view,
-        CardUIView cardUIViewPrefab
+        GameUIView gameUIView
     )
     {
         _model = model;
-        _view = view;
-        _cardUIViewPrefab = cardUIViewPrefab;
+        _gameUIView = gameUIView;
+
+        _spawnCardController = new SpawnCardController(gameUIView);
     }
 
     public void Initialize ()
@@ -39,17 +37,17 @@ public class CardManagerController
     {
         return _cardUIView != null
             ? _cardUIView
-            : GameObject.Instantiate(_cardUIViewPrefab, _view.transform);
+            : GameObject.Instantiate(Resources.Load<CardUIView>("CardUIView"), _gameUIView.CardContainer);
     }
 
     void AddViewListeners ()
     {
-        _view.OnClick += HandleSpawnClick;
+        _spawnCardController.View.OnClick += HandleSpawnClick;
     }
     
     void RemoveViewListeners ()
     {
-        _view.OnClick -= HandleSpawnClick;
+        _spawnCardController.View.OnClick -= HandleSpawnClick;
     }
 
     void HandleSpawnClick () => CreateNewCard();

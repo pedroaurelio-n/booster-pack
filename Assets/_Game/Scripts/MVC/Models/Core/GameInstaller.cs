@@ -3,36 +3,31 @@ using VContainer.Unity;
 
 public class GameInstaller : IInstaller
 {
+    readonly GameUIView _gameUIView;
     readonly IRandomProvider _randomProvider;
     readonly SettingsManager _settingsManager;
-    readonly SpawnCardUIView _spawnCardUIView;
-    readonly CardUIView _cardUIViewPrefab;
     
     public GameInstaller (
+        GameUIView gameUIView,
         IRandomProvider randomProvider,
-        SettingsManager settings,
-        SpawnCardUIView spawnCardUIView,
-        CardUIView cardUIViewPrefab
+        SettingsManager settings
     )
     {
+        _gameUIView = gameUIView;
         _randomProvider = randomProvider;
         _settingsManager = settings;
-        _spawnCardUIView = spawnCardUIView;
-        _cardUIViewPrefab = cardUIViewPrefab;
     }
     
     public void Install (IContainerBuilder builder)
     {
         builder.RegisterInstance(_randomProvider);
         builder.RegisterInstance(_settingsManager.CardListSettings.Instance);
+        builder.RegisterInstance(_gameUIView);
 
         builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
         builder.Register<ICardManagerModel, CardManagerModel>(Lifetime.Scoped);
         
         builder.Register<GameController>(Lifetime.Scoped);
         builder.Register<CardManagerController>(Lifetime.Scoped);
-
-        builder.RegisterComponentInNewPrefab(_cardUIViewPrefab, Lifetime.Scoped);
-        builder.RegisterComponent(_spawnCardUIView);
     }
 }
