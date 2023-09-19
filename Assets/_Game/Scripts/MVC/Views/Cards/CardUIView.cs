@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardUIView : MonoBehaviour
+public class CardUIView : PoolableUIView
 {
     [field: SerializeField] public BackgroundColors Colors { get; private set; }
     

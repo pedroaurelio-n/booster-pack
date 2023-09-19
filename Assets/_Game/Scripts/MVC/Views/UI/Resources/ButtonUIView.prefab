@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4360114541956954340}
   - component: {fileID: 4360114541956954341}
   m_Layer: 5
-  m_Name: SpawnCardUIView
+  m_Name: ButtonUIView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 4360114542019738174}
+  buttonText: {fileID: 4360114542679559433}
 --- !u!1 &4360114542019738147
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +186,7 @@ GameObject:
   - component: {fileID: 4360114542679559434}
   - component: {fileID: 4360114542679559433}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
