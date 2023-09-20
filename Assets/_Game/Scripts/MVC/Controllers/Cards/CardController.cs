@@ -1,21 +1,27 @@
 public class CardController
 {
-    readonly ICardModel _model;
     readonly CardUIView _view;
+    
+    ICardModel _model;
 
-    public CardController (
-        ICardModel model,
-        CardUIView view
-    )
+    public CardController (CardUIView view)
     {
-        _model = model;
         _view = view;
+        SetViewActive(false);
+    }
+
+    public void UpdateModel (ICardModel cardModel)
+    {
+        _model = cardModel;
     }
 
     public void Initialize ()
     {
+        SetViewActive(true);
         SyncView();
     }
+    
+    public void SetViewActive (bool value) => _view.gameObject.SetActive(value);
 
     void SyncView ()
     {

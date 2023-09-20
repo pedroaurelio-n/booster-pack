@@ -1,15 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardManagerController
 {
+    const int MIN_CARD_COUNT = 1;
+    const int MAX_CARD_COUNT = 5;
+    
     readonly ICardManagerModel _model;
     readonly GameUIView _gameUIView;
     readonly UIViewFactory _uiViewFactory;
 
     ButtonUIController _spawnButtonController;
-    ButtonUIController _despawnButtonController;
-    
-    CardUIView _cardUIView;
+
+    List<CardController> _cardControllers;
 
     public CardManagerController (
         ICardManagerModel model,
@@ -22,13 +25,19 @@ public class CardManagerController
         _uiViewFactory = uiViewFactory;
 
         _spawnButtonController = new ButtonUIController(gameUIView, "Spawn Card");
-        _despawnButtonController = new ButtonUIController(gameUIView, "Despawn Card");
     }
 
     public void Initialize ()
     {
         AddViewListeners();
         SetupPool();
+    }
+
+    void SyncView ()
+    {
+        int cardCount = Random.Range(MIN_CARD_COUNT, MAX_CARD_COUNT + 1);
+        CreateMissingInstances(cardCount);
+        UpdateInstances(cardCount);
     }
 
     void SetupPool ()
@@ -42,35 +51,49 @@ public class CardManagerController
 
     void CreateNewCard ()
     {
-        ICardModel cardModel = new CardModel(_model.GetRandomCard());
-        _cardUIView = GetCardUIView();
-
-        CardController cardController = new(cardModel, _cardUIView);
-        cardController.Initialize();
+        SyncView();
     }
 
-    void DespawnCard () => _uiViewFactory.ReleaseView(nameof(CardManagerController), _cardUIView);
-
-    CardUIView GetCardUIView ()
+    void CreateMissingInstances (int target)
     {
-        return _cardUIView == null || !_cardUIView.IsActive
-            ? _uiViewFactory.GetView<CardUIView>(nameof(CardManagerController))
-            : _cardUIView;
+        _cardControllers ??= new List<CardController>();
+        int missingCount = target - _cardControllers.Count;
+
+        for (int i = 0; i < missingCount; i++)
+        {
+            CardController controller = new(_uiViewFactory.GetView<CardUIView>(nameof(CardManagerController)));
+            _cardControllers.Add(controller);
+        }
+    }
+
+    void UpdateInstances (int target)
+    {
+        if (_cardControllers == null)
+            return;
+        
+        for (int i = 0; i < _cardControllers.Count; i++)
+        {
+            CardController controller = _cardControllers[i];
+            bool isActive = i < target;
+            if (!isActive)
+            {
+                controller.SetViewActive(false);
+                continue;
+            }
+            controller.UpdateModel(_model.GetRandomCard());
+            controller.Initialize();
+        }
     }
 
     void AddViewListeners ()
     {
         _spawnButtonController.View.OnClick += HandleSpawnClick;
-        _despawnButtonController.View.OnClick += HandleDespawnClick;
     }
     
     void RemoveViewListeners ()
     {
         _spawnButtonController.View.OnClick -= HandleSpawnClick;
-        _despawnButtonController.View.OnClick -= HandleDespawnClick;
     }
 
     void HandleSpawnClick () => CreateNewCard();
-
-    void HandleDespawnClick () => DespawnCard();
 }

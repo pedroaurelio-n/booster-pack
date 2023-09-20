@@ -63,13 +63,15 @@ namespace GameTests.Cards.CardManager
             public void GetCardByUid_Returns_Correct_Card ()
             {
                 const int UID = 1;
-                
-                ICardSettings expectedCard = CreateCard(UID, CardType.Monster, "two");
+                const string NAME = "two";
+
                 CreateCard(0, CardType.Monster, "one");
+                CreateCard(UID, CardType.Monster, NAME);
                 CreateCard(2, CardType.Monster, "three");
                 SetupCardList();
                 
-                Assert.AreEqual(expectedCard, Model.GetCardByUid(UID));
+                Assert.AreEqual(UID, Model.GetCardByUid(UID).Uid);
+                Assert.AreEqual(NAME, Model.GetCardByUid(UID).Name);
             }
             
             [Test]
@@ -91,13 +93,19 @@ namespace GameTests.Cards.CardManager
             [Test]
             public void GetRandomCard_Returns_Correct_Card ()
             {
+                const int UID = 2;
+                const string NAME = "three";
+
                 CreateCard(0, CardType.Monster, "one");
                 CreateCard(1, CardType.Monster, "two");
-                ICardSettings expectedCard = CreateCard(2, CardType.Monster, "three");
+                CreateCard(UID, CardType.Monster, NAME);
                 SetupCardList();
 
                 RandomProvider.Range(0, Cards.Count).Returns(2);
-                Model.GetRandomCard();
+
+                ICardModel card = Model.GetRandomCard();
+                Assert.AreEqual(UID, card.Uid);
+                Assert.AreEqual(NAME, card.Name);
             }
         }
     }
