@@ -1,7 +1,7 @@
 public enum CardType
 {
-    Monster,
-    Magic
+    Monster = 0,
+    Magic = 1
 }
 
 public static class CardTypeExtensions
