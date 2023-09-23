@@ -93,11 +93,11 @@ namespace GameTests.Cards.CardManager
             [Test]
             public void GetRandomCard_Returns_Correct_Card ()
             {
-                const int UID = 2;
+                const int UID = 106;
                 const string NAME = "three";
 
-                CreateCard(0, CardType.Monster, "one");
-                CreateCard(1, CardType.Monster, "two");
+                CreateCard(100, CardType.Monster, "one");
+                CreateCard(101, CardType.Monster, "two");
                 CreateCard(UID, CardType.Monster, NAME);
                 SetupCardList();
 

@@ -16,6 +16,9 @@ public class CardSettings : ICardSettings
     public string Description { get; }
     
     [JsonProperty]
+    public int? Level { get; }
+    
+    [JsonProperty]
     public int? Attack { get; }
     
     [JsonProperty]
@@ -26,6 +29,7 @@ public class CardSettings : ICardSettings
         CardType type,
         string name,
         string description,
+        int? level,
         int? attack,
         int? defense
     )
@@ -34,6 +38,7 @@ public class CardSettings : ICardSettings
         Type = type;
         Name = name;
         Description = description;
+        Level = level;
         Attack = attack;
         Defense = defense;
     }

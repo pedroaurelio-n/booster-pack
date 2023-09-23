@@ -1,40 +1,154 @@
 {
-  "cards": [
-    {
-      "uid": 0,
-      "type": 0,
-      "name": "Destroyer",
-      "description": "test desc",
-      "attack": 100,
-      "defense": 200
-    },
-    {
-      "uid": 1,
-      "type": 0,
-      "name": "Conqueror",
-      "description": "test desc",
-      "attack": 100,
-      "defense": 200
-    },
-    {
-      "uid": 2,
-      "type": 1,
-      "name": "Plus Attack",
-      "description": "test desc"
-    },
-    {
-      "uid": 3,
-      "type": 1,
-      "name": "Void Call",
-      "description": "test desc"
-    },
-    {
-      "uid": 4,
-      "type": 0,
-      "name": "The Mighty",
-      "description": "test desc",
-      "attack": 100,
-      "defense": 200
-    }
-  ]
+    "cards": [
+        {
+            "uid": 1000,
+            "type": 0,
+            "name": "Enraged Zombie",
+            "description": "A ravenous undead creature driven by insatiable hunger.",
+            "level": 6,
+            "attack": 2800,
+            "defense": 2100
+        },
+        {
+            "uid": 1001,
+            "type": 1,
+            "name": "Phoenix Feather",
+            "description": "Harness the power of a phoenix's feather to rise from the ashes."
+        },
+        {
+            "uid": 1002,
+            "type": 0,
+            "name": "Possessed Sword",
+            "description": "A cursed blade with a malevolent spirit bound within.",
+            "level": 4,
+            "attack": 1500,
+            "defense": 800
+        },
+        {
+            "uid": 1003,
+            "type": 1,
+            "name": "Forest of Doom",
+            "description": "Summon an enchanted forest teeming with treacherous traps and mystical creatures."
+        },
+        {
+            "uid": 1004,
+            "type": 0,
+            "name": "Loyal Knight",
+            "description": "A valiant knight sworn to protect the kingdom at all costs.",
+            "level": 8,
+            "attack": 3200,
+            "defense": 2800
+        },
+        {
+            "uid": 1005,
+            "type": 0,
+            "name": "Fiery Dragon",
+            "description": "A fearsome dragon with scales that burn like molten lava.",
+            "level": 9,
+            "attack": 3800,
+            "defense": 3000
+        },
+        {
+            "uid": 1006,
+            "type": 1,
+            "name": "Abyssal Portal",
+            "description": "Open a gateway to the abyss, unleashing dark and otherworldly energies.\r\n"
+        },
+        {
+            "uid": 1007,
+            "type": 0,
+            "name": "Haunted Doll",
+            "description": "A malevolent doll possessed by the spirit of a vengeful child.",
+            "level": 3,
+            "attack": 1200,
+            "defense": 800
+        },
+        {
+            "uid": 1008,
+            "type": 0,
+            "name": "Thunder Elemental",
+            "description": "A powerful elemental creature born of thunderstorms and lightning.",
+            "level": 7,
+            "attack": 2700,
+            "defense": 2200
+        },
+        {
+            "uid": 1009,
+            "type": 1,
+            "name": "Crystal Prism",
+            "description": "Harness the power of refracted light to create dazzling illusions.\r"
+        },
+        {
+            "uid": 1010,
+            "type": 1,
+            "name": "Astral Beacon",
+            "description": "Activate this beacon to call upon celestial entities for aid and guidance.\r"
+        },
+        {
+            "uid": 1011,
+            "type": 1,
+            "name": "Black Hole",
+            "description": "Unleash the cosmic forces with the power to devour everything in its path.\r"
+        },
+        {
+            "uid": 1012,
+            "type": 0,
+            "name": "Ancient Golem",
+            "description": "A colossal stone golem animated by ancient magic.",
+            "level": 5,
+            "attack": 2200,
+            "defense": 2600
+        },
+        {
+            "uid": 1013,
+            "type": 1,
+            "name": "Time Warp",
+            "description": "Manipulate time and space to rewrite history or glimpse into the future.\r"
+        },
+        {
+            "uid": 1014,
+            "type": 1,
+            "name": "Cursed Mirror",
+            "description": "Peer into this mirror, but beware the dark reflections it may reveal.\r"
+        },
+        {
+            "uid": 1015,
+            "type": 0,
+            "name": "Venomous Serpent",
+            "description": "A deadly serpent with venomous fangs and an insatiable appetite.",
+            "level": 1,
+            "attack": 500,
+            "defense": 100
+        },
+        {
+            "uid": 1016,
+            "type": 0,
+            "name": "Spectral Banshee",
+            "description": "A wailing specter that chills the hearts of all who hear its mournful cry.",
+            "level": 7,
+            "attack": 2400,
+            "defense": 1800
+        },
+        {
+            "uid": 1017,
+            "type": 0,
+            "name": "Ironclad Gargoyle",
+            "description": "A stone gargoyle brought to life, impervious to all but the strongest attacks.",
+            "level": 8,
+            "attack": 3200,
+            "defense": 4000
+        },
+        {
+            "uid": 1018,
+            "type": 1,
+            "name": "Enchanted Amulet",
+            "description": "Wear this amulet to gain protection from curses and dark magic\r\n"
+        },
+        {
+            "uid": 1019,
+            "type": 1,
+            "name": "Sacred Helmet",
+            "description": "Equip this legendary helmet to gain the protection of divine spirits.\r"
+        }
+    ]
 }

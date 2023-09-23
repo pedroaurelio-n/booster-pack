@@ -27,7 +27,8 @@ public class CardManagerModel : ICardManagerModel
 
     public ICardModel GetRandomCard ()
     {
-        int randomUid = _randomProvider.Range(0, _settings.Cards.Count);
+        int randomIndex = _randomProvider.Range(0, _settings.Cards.Count);
+        int randomUid = _settings.Cards[randomIndex].Uid;
         return GetCardByUid(randomUid);
     }
 }

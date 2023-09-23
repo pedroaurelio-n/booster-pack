@@ -53,6 +53,14 @@ namespace GameTests.Cards.Card
                 Settings.Description.Returns(DESCRIPTION);
                 Assert.AreEqual(DESCRIPTION, Model.Description);
             }
+
+            [Test]
+            public void Level ()
+            {
+                const int LEVEL = 6;
+                Settings.Level.Returns(LEVEL);
+                Assert.AreEqual(LEVEL, Model.Level);
+            }
             
             [Test]
             public void Attack ()
