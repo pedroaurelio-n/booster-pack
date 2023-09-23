@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PoolableUIView : MonoBehaviour
+public class PoolableView : MonoBehaviour
 {
     public bool IsActive => gameObject.activeInHierarchy;
 }

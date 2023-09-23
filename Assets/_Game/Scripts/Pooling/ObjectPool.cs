@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Enumerable = System.Linq.Enumerable;
 
-public class ObjectPool<T> where T : PoolableUIView
+public class ObjectPool<T> where T : PoolableView
 {
     readonly HashSet<T> _activeObjects = new();
     readonly HashSet<T> _inactiveObjects = new();

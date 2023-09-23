@@ -8,6 +8,9 @@ public class GameLifetimeScope : LifetimeScope
     public GameController GameController { get; private set; }
     public GameUIView GameUIView { get; private set; }
     
+    //TODO: Separate Game scope from Map scope
+    public MapView MapView { get; private set; }
+    
     public SettingsManager SettingsManager { get; private set; }
     public IRandomProvider RandomProvider { get; private set; }
 
@@ -41,11 +44,13 @@ public class GameLifetimeScope : LifetimeScope
     void CreateInstaller (IContainerBuilder builder)
     {
         GameUIView = GameObject.Instantiate(Resources.Load<GameUIView>("GameUIView"));
+        MapView = GameObject.Instantiate(Resources.Load<MapView>("MapView"));
 
         UIViewFactory uiViewFactory = new();
         
         GameInstaller installer = new(
             GameUIView,
+            MapView,
             uiViewFactory,
             RandomProvider,
             SettingsManager

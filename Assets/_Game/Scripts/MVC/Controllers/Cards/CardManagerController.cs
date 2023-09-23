@@ -8,6 +8,7 @@ public class CardManagerController
     
     readonly ICardManagerModel _model;
     readonly GameUIView _gameUIView;
+    readonly MapView _mapView;
     readonly UIViewFactory _uiViewFactory;
 
     ButtonUIController _spawnButtonController;
@@ -17,14 +18,16 @@ public class CardManagerController
     public CardManagerController (
         ICardManagerModel model,
         GameUIView gameUIView,
+        MapView mapView,
         UIViewFactory uiViewFactory
     )
     {
         _model = model;
         _gameUIView = gameUIView;
+        _mapView = mapView;
         _uiViewFactory = uiViewFactory;
 
-        _spawnButtonController = new ButtonUIController(gameUIView, "Spawn Card");
+        _spawnButtonController = new ButtonUIController(_gameUIView, "Spawn Card");
     }
 
     public void Initialize ()
@@ -44,8 +47,8 @@ public class CardManagerController
     {
         _uiViewFactory.SetupPool(
             nameof(CardManagerController),
-            Resources.Load<CardUIView>("CardUIView"),
-            _gameUIView.CardContainer
+            Resources.Load<CardView>("CardView"),
+            _mapView.CardContainer
         );
     }
 
@@ -61,7 +64,7 @@ public class CardManagerController
 
         for (int i = 0; i < missingCount; i++)
         {
-            CardController controller = new(_uiViewFactory.GetView<CardUIView>(nameof(CardManagerController)));
+            CardController controller = new(_uiViewFactory.GetView<CardView>(nameof(CardManagerController)));
             _cardControllers.Add(controller);
         }
     }
@@ -81,7 +84,7 @@ public class CardManagerController
                 continue;
             }
             controller.UpdateModel(_model.GetRandomCard());
-            controller.Initialize();
+            controller.Initialize(i + 1, target);
         }
     }
 

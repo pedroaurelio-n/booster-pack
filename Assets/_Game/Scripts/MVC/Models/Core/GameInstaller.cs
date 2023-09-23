@@ -4,18 +4,21 @@ using VContainer.Unity;
 public class GameInstaller : IInstaller
 {
     readonly GameUIView _gameUIView;
+    readonly MapView _mapView;
     readonly UIViewFactory _uiViewFactory;
     readonly IRandomProvider _randomProvider;
     readonly SettingsManager _settingsManager;
     
     public GameInstaller (
         GameUIView gameUIView,
+        MapView mapView,
         UIViewFactory uiViewFactory,
         IRandomProvider randomProvider,
         SettingsManager settings
     )
     {
         _gameUIView = gameUIView;
+        _mapView = mapView;
         _uiViewFactory = uiViewFactory;
         _randomProvider = randomProvider;
         _settingsManager = settings;
@@ -27,6 +30,7 @@ public class GameInstaller : IInstaller
         builder.RegisterInstance(_settingsManager.CardListSettings.Instance);
         
         builder.RegisterInstance(_gameUIView);
+        builder.RegisterInstance(_mapView);
         builder.RegisterInstance(_uiViewFactory);
 
         builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
