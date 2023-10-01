@@ -1,10 +1,13 @@
 {
     "packs": [
         {
+            "uid": 1,
             "name": "First Pack",
+            "cardQuantity": 5,
             "cardPools": [
                 {
                     "rarity": 0,
+                    "chance": 0.65,
                     "ids": [
                         1000,
                         1001,
@@ -23,6 +26,7 @@
                 },
                 {
                     "rarity": 1,
+                    "chance": 0.25,
                     "ids": [
                         1013,
                         1014,
@@ -33,6 +37,7 @@
                 },
                 {
                     "rarity": 2,
+                    "chance": 0.1,
                     "ids": [
                         1018,
                         1019
