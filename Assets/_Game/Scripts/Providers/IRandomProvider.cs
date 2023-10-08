@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IRandomProvider
@@ -11,4 +12,6 @@ public interface IRandomProvider
     float Range (float min, float max);
     Vector2 Range (Vector2 min, Vector2 max);
     Vector3 Range (Vector3 min, Vector3 max);
+
+    T WeightedRandom<T> (List<WeightedObject<T>> weightedList);
 }
