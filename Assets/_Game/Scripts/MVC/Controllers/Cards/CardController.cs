@@ -1,5 +1,4 @@
 using UnityEngine;
-using static GameGlobalSettings.CardAnimation;
 
 public class CardController
 {
@@ -27,7 +26,14 @@ public class CardController
         SetPositionX(index, cardCount);
     }
     
-    public void SetViewActive (bool value) => _view.SetActiveState(value, ROTATION_DURATION);
+    public void SetViewActive (bool value)
+    {
+        _view.CardAnimation.StopRotation();
+        _view.SetActiveState(value);
+        
+        if (value)
+            _view.CardAnimation.StartRotation();
+    }
 
     void SyncView ()
     {

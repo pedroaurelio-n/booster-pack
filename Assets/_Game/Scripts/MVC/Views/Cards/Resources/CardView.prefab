@@ -1185,6 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3033813249623291733}
   - component: {fileID: 3033813249623291732}
+  - component: {fileID: 3450573601919609860}
   m_Layer: 0
   m_Name: CardView
   m_TagString: Untagged
@@ -1221,6 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bec44987a446f4189371c4ced6270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <CardAnimation>k__BackingField: {fileID: 3450573601919609860}
   <Colors>k__BackingField:
     MonsterColor: {r: 0.6320754, g: 0.40851438, b: 0.3965379, a: 1}
     MagicColor: {r: 0.40922037, g: 0.5494225, b: 0.7169812, a: 1}
@@ -1255,6 +1257,18 @@ MonoBehaviour:
   - {fileID: 6414064769892389020}
   - {fileID: 9177604860171172346}
   - {fileID: 2580468494691067793}
+--- !u!114 &3450573601919609860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033813249623291738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b80e36f22ac074aa8cf28b13cfca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3033813249727891096
 GameObject:
   m_ObjectHideFlags: 0

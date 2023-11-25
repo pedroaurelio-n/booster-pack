@@ -2,10 +2,13 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class CardView : PoolableView
 {
+    [field: Header("Components")]
+    [field: SerializeField] public CardAnimationView CardAnimation { get; private set; }
+
+    [field: Header("Contents")]
     [field: SerializeField] public BackgroundColors Colors { get; private set; }
     
     [SerializeField] TextMeshProUGUI titleText;
@@ -18,9 +21,7 @@ public class CardView : PoolableView
     [SerializeField] GameObject defenseContainer;
     [SerializeField] TextMeshProUGUI defenseText;
     [SerializeField] Image[] coloredElements;
-
-    Tween rotateTween;
-
+    
     public void SetTitleText (string text) => titleText.text = text;
 
     public void SetDescriptionText (string text) => descriptionText.text = text;
@@ -88,19 +89,7 @@ public class CardView : PoolableView
         defenseText.text = defense.ToString();
     }
 
-    public void SetActiveState (bool value, float duration)
-    {
-        rotateTween?.Kill();
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-        gameObject.SetActive(value);
-
-        if (value)
-        {
-            rotateTween = transform.DORotate(new Vector3(0, 360f, 0), duration)
-                .SetRelative().SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
-            rotateTween.Play();
-        }
-    }
+    public void SetActiveState (bool value) => gameObject.SetActive(value);
 
     [Serializable]
     public struct BackgroundColors
