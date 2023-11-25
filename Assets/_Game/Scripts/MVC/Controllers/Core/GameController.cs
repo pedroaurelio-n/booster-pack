@@ -1,14 +1,14 @@
 public class GameController
 {
-    public CardManagerController CardManagerController { get; private set; }
+    public BoosterPackManagerController BoosterPackManagerController { get; private set; }
 
-    public GameController (CardManagerController cardManagerController)
+    public GameController (BoosterPackManagerController boosterPackManagerController)
     {
-        CardManagerController = cardManagerController;
+        BoosterPackManagerController = boosterPackManagerController;
     }
 
     public void Initialize ()
     {
-        CardManagerController.Initialize();
+        BoosterPackManagerController.Initialize();
     }
 }

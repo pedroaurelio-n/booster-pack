@@ -3,6 +3,7 @@ using System.Linq;
 
 public class BoosterPackModel : IBoosterPackModel
 {
+    public IReadOnlyList<IPackSettings> Packs => _settings.Packs;
     public string CurrentPackName => _currentPack.Name;
     public int CurrentCardQuantity => _currentPack.CardQuantity;
 

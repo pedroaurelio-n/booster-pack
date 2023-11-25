@@ -88,7 +88,7 @@ public class CardView : PoolableView
         defenseText.text = defense.ToString();
     }
 
-    public void SetActiveState (bool value)
+    public void SetActiveState (bool value, float duration)
     {
         rotateTween?.Kill();
         transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -96,7 +96,7 @@ public class CardView : PoolableView
 
         if (value)
         {
-            rotateTween = transform.DORotate(new Vector3(0, 360f, 0), 6f)
+            rotateTween = transform.DORotate(new Vector3(0, 360f, 0), duration)
                 .SetRelative().SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
             rotateTween.Play();
         }

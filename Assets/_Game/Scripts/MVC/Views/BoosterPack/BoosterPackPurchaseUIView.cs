@@ -3,17 +3,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonUIView : MonoBehaviour
+public class BoosterPackPurchaseUIView : MonoBehaviour
 {
     public event Action OnClick;
 
     [SerializeField] Button button;
-    [SerializeField] TextMeshProUGUI buttonText;
+    [SerializeField] TextMeshProUGUI nameText;
 
     void Awake ()
     {
         button.onClick.AddListener(() => OnClick?.Invoke());
     }
 
-    public void SetText (string text) => buttonText.text = text;
+    public void SetPackName (string text) => nameText.text = text;
 }

@@ -28,6 +28,7 @@ public class GameInstaller : IInstaller
     {
         builder.RegisterInstance(_randomProvider);
         builder.RegisterInstance(_settingsManager.CardListSettings.Instance);
+        builder.RegisterInstance(_settingsManager.BoosterPackSettings.Instance);
         
         builder.RegisterInstance(_gameUIView);
         builder.RegisterInstance(_mapView);
@@ -35,8 +36,9 @@ public class GameInstaller : IInstaller
 
         builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
         builder.Register<ICardManagerModel, CardManagerModel>(Lifetime.Scoped);
+        builder.Register<IBoosterPackModel, BoosterPackModel>(Lifetime.Scoped);
         
         builder.Register<GameController>(Lifetime.Scoped);
-        builder.Register<CardManagerController>(Lifetime.Scoped);
+        builder.Register<BoosterPackManagerController>(Lifetime.Scoped);
     }
 }

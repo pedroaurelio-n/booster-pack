@@ -1,22 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardManagerController
+public class BoosterPackManagerController
 {
-    const int MIN_CARD_COUNT = 1;
-    const int MAX_CARD_COUNT = 5;
-    
-    readonly ICardManagerModel _model;
+    readonly IBoosterPackModel _model;
     readonly GameUIView _gameUIView;
     readonly MapView _mapView;
     readonly UIViewFactory _uiViewFactory;
 
-    ButtonUIController _spawnButtonController;
-
+    List<BoosterPackPurchaseUIController> _packButtonControllers = new();
     List<CardController> _cardControllers;
 
-    public CardManagerController (
-        ICardManagerModel model,
+    public BoosterPackManagerController (
+        IBoosterPackModel model,
         GameUIView gameUIView,
         MapView mapView,
         UIViewFactory uiViewFactory
@@ -26,8 +22,8 @@ public class CardManagerController
         _gameUIView = gameUIView;
         _mapView = mapView;
         _uiViewFactory = uiViewFactory;
-
-        _spawnButtonController = new ButtonUIController(_gameUIView, "Spawn Card");
+        
+        SetupUIButtons();
     }
 
     public void Initialize ()
@@ -35,10 +31,20 @@ public class CardManagerController
         AddViewListeners();
         SetupPool();
     }
+    
+    void SetupUIButtons ()
+    {
+        foreach (IPackSettings pack in _model.Packs)
+        {
+            BoosterPackPurchaseUIController boosterPackPurchaseController = new(_gameUIView, pack.Uid, pack.Name);
+            boosterPackPurchaseController.Initialize();
+            _packButtonControllers.Add(boosterPackPurchaseController);
+        }
+    }
 
     void SyncView ()
     {
-        int cardCount = Random.Range(MIN_CARD_COUNT, MAX_CARD_COUNT + 1);
+        int cardCount = _model.CurrentCardQuantity;
         CreateMissingInstances(cardCount);
         UpdateInstances(cardCount);
     }
@@ -46,14 +52,15 @@ public class CardManagerController
     void SetupPool ()
     {
         _uiViewFactory.SetupPool(
-            nameof(CardManagerController),
+            nameof(BoosterPackManagerController),
             Resources.Load<CardView>("CardView"),
             _mapView.CardContainer
         );
     }
 
-    void CreateNewCard ()
+    void PurchaseBoosterPack (int uid)
     {
+        _model.UpdateCurrentPack(uid);
         SyncView();
     }
 
@@ -64,7 +71,7 @@ public class CardManagerController
 
         for (int i = 0; i < missingCount; i++)
         {
-            CardController controller = new(_uiViewFactory.GetView<CardView>(nameof(CardManagerController)));
+            CardController controller = new(_uiViewFactory.GetView<CardView>(nameof(BoosterPackManagerController)));
             _cardControllers.Add(controller);
         }
     }
@@ -83,20 +90,22 @@ public class CardManagerController
                 controller.SetViewActive(false);
                 continue;
             }
-            controller.UpdateModel(_model.GetRandomCard());
+            controller.UpdateModel(_model.GetCardFromPool());
             controller.Initialize(i + 1, target);
         }
     }
 
     void AddViewListeners ()
     {
-        _spawnButtonController.View.OnClick += HandleSpawnClick;
+        foreach (BoosterPackPurchaseUIController packButtonController in _packButtonControllers)
+            packButtonController.OnBoosterPackPurchase += HandleBoosterPackPurchase;
     }
     
     void RemoveViewListeners ()
     {
-        _spawnButtonController.View.OnClick -= HandleSpawnClick;
+        foreach (BoosterPackPurchaseUIController packButtonController in _packButtonControllers)
+            packButtonController.OnBoosterPackPurchase -= HandleBoosterPackPurchase;
     }
 
-    void HandleSpawnClick () => CreateNewCard();
+    void HandleBoosterPackPurchase (int uid) => PurchaseBoosterPack(uid);
 }
