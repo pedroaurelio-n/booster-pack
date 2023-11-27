@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : PoolableView
+public class CardView : PoolableView, IMouseInteractable
 {
     [field: Header("Components")]
     [field: SerializeField] public CardAnimationView CardAnimation { get; private set; }
@@ -90,6 +90,16 @@ public class CardView : PoolableView
     }
 
     public void SetActiveState (bool value) => gameObject.SetActive(value);
+
+    public void OnEnter ()
+    {
+        Debug.Log($"Enter {titleText.text}");
+    }
+    
+    public void OnExit ()
+    {
+        Debug.Log($"Exit {titleText.text}");
+    }
 
     [Serializable]
     public struct BackgroundColors

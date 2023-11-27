@@ -32,13 +32,19 @@ public class GameInstaller : IInstaller
         
         builder.RegisterInstance(_gameUIView);
         builder.RegisterInstance(_mapView);
+        builder.RegisterInstance(_mapView.MouseInput);
         builder.RegisterInstance(_uiViewFactory);
 
-        builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
+        builder.Register<IMouseInputModel, MouseInputModel>(Lifetime.Scoped);
+
         builder.Register<ICardManagerModel, CardManagerModel>(Lifetime.Scoped);
         builder.Register<IBoosterPackModel, BoosterPackModel>(Lifetime.Scoped);
+        builder.Register<IGameModel, GameModel>(Lifetime.Scoped);
+
+        builder.Register<MouseInputController>(Lifetime.Scoped);
         
-        builder.Register<GameController>(Lifetime.Scoped);
         builder.Register<BoosterPackManagerController>(Lifetime.Scoped);
+        builder.Register<GameController>(Lifetime.Scoped);
+
     }
 }

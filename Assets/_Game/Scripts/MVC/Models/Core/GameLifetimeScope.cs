@@ -44,7 +44,9 @@ public class GameLifetimeScope : LifetimeScope
     void CreateInstaller (IContainerBuilder builder)
     {
         GameUIView = GameObject.Instantiate(Resources.Load<GameUIView>("GameUIView"));
+        
         MapView = GameObject.Instantiate(Resources.Load<MapView>("MapView"));
+        MapView.Initialize();
 
         UIViewFactory uiViewFactory = new();
         
