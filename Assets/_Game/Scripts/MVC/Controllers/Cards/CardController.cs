@@ -28,11 +28,12 @@ public class CardController
     
     public void SetViewActive (bool value)
     {
+        _view.CardAnimation.Initialize();
         _view.CardAnimation.StopRotation();
         _view.SetActiveState(value);
         
         if (value)
-            _view.CardAnimation.StartRotation();
+            _view.CardAnimation.StartRotationAndResetScale();
     }
 
     void SyncView ()

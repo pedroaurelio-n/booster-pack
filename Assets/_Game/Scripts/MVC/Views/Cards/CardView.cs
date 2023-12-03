@@ -3,13 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : PoolableView, IMouseInteractable
+public class CardView : PoolableView
 {
     [field: Header("Components")]
     [field: SerializeField] public CardAnimationView CardAnimation { get; private set; }
 
     [field: Header("Contents")]
-    [field: SerializeField] public BackgroundColors Colors { get; private set; }
+    [field: SerializeField] public CardBackgroundColors Colors { get; private set; }
     
     [SerializeField] TextMeshProUGUI titleText;
     [SerializeField] TextMeshProUGUI descriptionText;
@@ -91,18 +91,8 @@ public class CardView : PoolableView, IMouseInteractable
 
     public void SetActiveState (bool value) => gameObject.SetActive(value);
 
-    public void OnEnter ()
-    {
-        Debug.Log($"Enter {titleText.text}");
-    }
-    
-    public void OnExit ()
-    {
-        Debug.Log($"Exit {titleText.text}");
-    }
-
     [Serializable]
-    public struct BackgroundColors
+    public struct CardBackgroundColors
     {
         public Color MonsterColor;
         public Color MagicColor;
