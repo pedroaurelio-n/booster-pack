@@ -6,29 +6,33 @@ public class GameInstaller : IInstaller
     readonly GameUIView _gameUIView;
     readonly MapView _mapView;
     readonly UIViewFactory _uiViewFactory;
-    readonly IRandomProvider _randomProvider;
     readonly SettingsManager _settingsManager;
+    readonly IRandomProvider _randomProvider;
+    readonly IPhysicsProvider _physicsProvider;
     
     public GameInstaller (
         GameUIView gameUIView,
         MapView mapView,
         UIViewFactory uiViewFactory,
+        SettingsManager settings,
         IRandomProvider randomProvider,
-        SettingsManager settings
+        IPhysicsProvider physicsProvider
     )
     {
         _gameUIView = gameUIView;
         _mapView = mapView;
         _uiViewFactory = uiViewFactory;
-        _randomProvider = randomProvider;
         _settingsManager = settings;
+        _randomProvider = randomProvider;
+        _physicsProvider = physicsProvider;
     }
     
     public void Install (IContainerBuilder builder)
     {
-        builder.RegisterInstance(_randomProvider);
         builder.RegisterInstance(_settingsManager.CardListSettings.Instance);
         builder.RegisterInstance(_settingsManager.BoosterPackSettings.Instance);
+        builder.RegisterInstance(_randomProvider);
+        builder.RegisterInstance(_physicsProvider);
         
         builder.RegisterInstance(_gameUIView);
         builder.RegisterInstance(_mapView);

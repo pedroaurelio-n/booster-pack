@@ -13,6 +13,7 @@ public class GameLifetimeScope : LifetimeScope
     
     public SettingsManager SettingsManager { get; private set; }
     public IRandomProvider RandomProvider { get; private set; }
+    public IPhysicsProvider PhysicsProvider { get; private set; }
 
     protected override void Awake ()
     {
@@ -39,6 +40,7 @@ public class GameLifetimeScope : LifetimeScope
     {
         SettingsManager = new SettingsManager();
         RandomProvider = new RandomProvider();
+        PhysicsProvider = new PhysicsProvider();
     }
 
     void CreateInstaller (IContainerBuilder builder)
@@ -54,8 +56,9 @@ public class GameLifetimeScope : LifetimeScope
             GameUIView,
             MapView,
             uiViewFactory,
+            SettingsManager,
             RandomProvider,
-            SettingsManager
+            PhysicsProvider
         );
         installer.Install(builder);
     }

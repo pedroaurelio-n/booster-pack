@@ -5,9 +5,17 @@ public class MouseInputModel : IMouseInputModel
     public Vector3 CurrentPosition { get; private set; }
     public bool IsHoveringInteractable => _currentInteractable != null;
 
+    readonly IPhysicsProvider _physicsProvider;
+
     Camera _mainCamera;
     IMouseInteractable _currentInteractable;
     IMouseClickable _currentClickable;
+    Collider _currentCollider;
+
+    public MouseInputModel (IPhysicsProvider physicsProvider)
+    {
+        _physicsProvider = physicsProvider;
+    }
 
     public void SetMainCamera (Camera mainCamera) => _mainCamera = mainCamera;
     
@@ -37,10 +45,15 @@ public class MouseInputModel : IMouseInputModel
     {
         Ray ray = _mainCamera.ScreenPointToRay(CurrentPosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (_physicsProvider.Raycast(ray, out RaycastHit hit))
         {
-            IMouseInteractable interactable = hit.collider.GetComponent<IMouseInteractable>();
-            IMouseClickable clickable = hit.collider.GetComponent<IMouseClickable>();
+            if (hit.collider == _currentCollider)
+                return;
+
+            _currentCollider = hit.collider;
+            
+            IMouseInteractable interactable = _currentCollider.GetComponent<IMouseInteractable>();
+            IMouseClickable clickable = _currentCollider.GetComponent<IMouseClickable>();
 
             if (interactable == null)
                 return;
@@ -58,6 +71,7 @@ public class MouseInputModel : IMouseInputModel
             _currentInteractable.OnExit();
             _currentInteractable = null;
             _currentClickable = null;
+            _currentCollider = null;
         }
     }
 }
