@@ -4,17 +4,21 @@ using static GameGlobalSettings.CardAnimation;
 
 public class CardAnimationView : MonoBehaviour, IMouseInteractable
 {
+    [SerializeField] Transform targetTransform;
+    
     Tween _rotateTween;
     Tween _scaleTween;
 
+    //TODO figure out dependency
+    CardView _cardView;
     Transform _transform;
     Vector3 _initialScale;
 
-    public void Initialize ()
+    public void Initialize (CardView cardView)
     {
-        if (_transform != null)
-            return;
-        
+        _transform = targetTransform != null ? targetTransform : transform;
+
+        _cardView = cardView;
         _transform = transform;
         _initialScale = _transform.localScale;
     }
@@ -45,13 +49,16 @@ public class CardAnimationView : MonoBehaviour, IMouseInteractable
         _transform.localScale = _initialScale;
     }
 
+    //TODO move to CardView
     public void OnEnter ()
     {
+        _cardView.PlayParticles();
         ResetRotationAndZoomIn();
     }
 
     public void OnExit ()
     {
+        _cardView.StopParticles();
         StartRotationAndResetScale();
     }
 

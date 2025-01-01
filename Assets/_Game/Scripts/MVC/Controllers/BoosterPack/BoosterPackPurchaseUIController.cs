@@ -4,6 +4,7 @@ using UnityEngine;
 public class BoosterPackPurchaseUIController
 {
     public event Action<int> OnBoosterPackPurchase;
+    
     public int Uid { get; }
     public BoosterPackPurchaseUIView View { get; private set; }
     

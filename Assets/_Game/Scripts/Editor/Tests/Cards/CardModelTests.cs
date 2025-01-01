@@ -39,6 +39,14 @@ namespace GameTests.Cards.Card
             }
             
             [Test]
+            public void CurrentRarity ()
+            {
+                const CardRarity RARITY = CardRarity.Rare;
+                Model.AssignRarity(RARITY);
+                Assert.AreEqual(RARITY, Model.CurrentRarity);
+            }
+            
+            [Test]
             public void Name ()
             {
                 const string NAME = "name";

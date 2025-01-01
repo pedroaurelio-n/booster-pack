@@ -44,6 +44,10 @@ public class BoosterPackModel : IBoosterPackModel
         CardRarity rarity = _randomProvider.WeightedRandom(_currentCardPool);
         ICardPoolSettings poolSettings = _currentPack.CardPools.First(x => x.Rarity == rarity);
         int randomIndex = _randomProvider.Range(0, poolSettings.Ids.Count);
-        return _cardManagerModel.GetCardByUid(poolSettings.Ids[randomIndex]);
+        
+        ICardModel selectedCard = _cardManagerModel.GetCardByUid(poolSettings.Ids[randomIndex]);
+        selectedCard.AssignRarity(rarity);
+        
+        return selectedCard;
     }
 }

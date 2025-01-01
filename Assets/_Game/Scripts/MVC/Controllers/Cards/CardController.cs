@@ -28,7 +28,7 @@ public class CardController
     
     public void SetViewActive (bool value)
     {
-        _view.CardAnimation.Initialize();
+        _view.CardAnimation.Initialize(_view);
         _view.CardAnimation.StopRotation();
         _view.SetActiveState(value);
         
@@ -47,7 +47,8 @@ public class CardController
         _view.SetArtSprite(cardSprite);
         _view.SetAttack(_model.Attack);
         _view.SetDefense(_model.Defense);
-        _view.SetColor(_model.Type == CardType.Monster ? _view.Colors.MonsterColor : _view.Colors.MagicColor);
+        _view.SetColor(_model.Type);
+        _view.SetRarity(_model.CurrentRarity);
     }
 
     void SetPositionX (int index, int cardCount)

@@ -77,14 +77,12 @@ namespace GameTests.Cards.CardManager
             [Test]
             public void GetCardByUid_Throws_Exception_If_Uid_Not_Found ()
             {
-                const int UID = 5;
-                
                 CreateCard(0, CardType.Monster, "one");
-                ICardSettings expectedCard = CreateCard(1, CardType.Monster, "two");
+                CreateCard(1, CardType.Monster, "two");
                 CreateCard(2, CardType.Monster, "three");
                 SetupCardList();
 
-                Assert.Throws<InvalidOperationException>(() => Model.GetCardByUid(UID));
+                Assert.Throws<InvalidOperationException>(() => Model.GetCardByUid(5));
             }
         }
 

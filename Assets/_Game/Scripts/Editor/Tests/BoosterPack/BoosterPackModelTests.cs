@@ -162,6 +162,8 @@ namespace GameTests.BoosterPack
             [Test]
             public void GetCardFromPool_Returns_Correct_Rarity ()
             {
+                const CardRarity RARITY = CardRarity.SuperRare;
+                
                 SetupSettings();
 
                 List<WeightedObject<CardRarity>> weightedObjects = new()
@@ -174,7 +176,7 @@ namespace GameTests.BoosterPack
                 Model.UpdateCurrentPack(2);
 
                 RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>())
-                    .Returns(CardRarity.SuperRare);
+                    .Returns(RARITY);
                 RandomProvider.Range(0, 4).Returns(3);
 
                 ICardModel expectedCard = Substitute.For<ICardModel>();
@@ -186,7 +188,9 @@ namespace GameTests.BoosterPack
                 CardManagerModel.GetCardByUid(16).Returns(expectedCard);
 
                 ICardModel selectedCard = Model.GetCardFromPool();
+                
                 Assert.AreEqual(expectedCard, selectedCard);
+                Assert.AreEqual(RARITY, selectedCard.CurrentRarity);
             }
         }
     }
