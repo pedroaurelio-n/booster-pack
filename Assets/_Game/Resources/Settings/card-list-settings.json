@@ -5,9 +5,9 @@
             "type": 0,
             "name": "Enraged Zombie",
             "description": "A ravenous undead creature driven by insatiable hunger.",
-            "level": 6,
-            "attack": 2800,
-            "defense": 2100
+            "level": 2,
+            "attack": 900,
+            "defense": 700
         },
         {
             "uid": 1001,
@@ -20,9 +20,9 @@
             "type": 0,
             "name": "Possessed Sword",
             "description": "A cursed blade with a malevolent spirit bound within.",
-            "level": 4,
-            "attack": 1500,
-            "defense": 800
+            "level": 3,
+            "attack": 1600,
+            "defense": 200
         },
         {
             "uid": 1003,
@@ -35,24 +35,24 @@
             "type": 0,
             "name": "Loyal Knight",
             "description": "A valiant knight sworn to protect the kingdom at all costs.",
-            "level": 8,
-            "attack": 3200,
-            "defense": 2800
+            "level": 4,
+            "attack": 1700,
+            "defense": 1100
         },
         {
             "uid": 1005,
             "type": 0,
             "name": "Fiery Dragon",
             "description": "A fearsome dragon with scales that burn like molten lava.",
-            "level": 9,
-            "attack": 3800,
-            "defense": 3000
+            "level": 6,
+            "attack": 2500,
+            "defense": 2000
         },
         {
             "uid": 1006,
             "type": 1,
             "name": "Abyssal Portal",
-            "description": "Open a gateway to the abyss, unleashing dark and otherworldly energies.\r\n"
+            "description": "Open a gateway to the abyss, unleashing dark and otherworldly energies."
         },
         {
             "uid": 1007,
@@ -60,17 +60,17 @@
             "name": "Haunted Doll",
             "description": "A malevolent doll possessed by the spirit of a vengeful child.",
             "level": 3,
-            "attack": 1200,
-            "defense": 800
+            "attack": 1100,
+            "defense": 600
         },
         {
             "uid": 1008,
             "type": 0,
             "name": "Thunder Elemental",
             "description": "A powerful elemental creature born of thunderstorms and lightning.",
-            "level": 7,
-            "attack": 2700,
-            "defense": 2200
+            "level": 5,
+            "attack": 2000,
+            "defense": 1900
         },
         {
             "uid": 1009,
@@ -95,9 +95,9 @@
             "type": 0,
             "name": "Ancient Golem",
             "description": "A colossal stone golem animated by ancient magic.",
-            "level": 5,
-            "attack": 2200,
-            "defense": 2600
+            "level": 4,
+            "attack": 1500,
+            "defense": 1400
         },
         {
             "uid": 1013,
@@ -117,26 +117,26 @@
             "name": "Venomous Serpent",
             "description": "A deadly serpent with venomous fangs and an insatiable appetite.",
             "level": 1,
-            "attack": 500,
-            "defense": 100
+            "attack": 400,
+            "defense": 200
         },
         {
             "uid": 1016,
             "type": 0,
             "name": "Spectral Banshee",
             "description": "A wailing specter that chills the hearts of all who hear its mournful cry.",
-            "level": 7,
-            "attack": 2400,
-            "defense": 1800
+            "level": 5,
+            "attack": 2200,
+            "defense": 1600
         },
         {
             "uid": 1017,
             "type": 0,
             "name": "Ironclad Gargoyle",
             "description": "A stone gargoyle brought to life, impervious to all but the strongest attacks.",
-            "level": 8,
-            "attack": 3200,
-            "defense": 4000
+            "level": 4,
+            "attack": 1300,
+            "defense": 1800
         },
         {
             "uid": 1018,
