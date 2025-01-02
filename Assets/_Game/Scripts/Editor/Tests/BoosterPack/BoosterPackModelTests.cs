@@ -37,13 +37,14 @@ namespace GameTests.BoosterPack
             protected IPackSettings SetupPackSettings (
                 int uid,
                 string name,
-                int cardQuantity,
-                List<ICardPoolSettings> cardPools)
+                int? cardQuantity,
+                List<ICardPoolSettings> cardPools
+            )
             {
                 IPackSettings packSettings = Substitute.For<IPackSettings>();
                 packSettings.Uid.Returns(uid);
                 packSettings.Name.Returns(name);
-                packSettings.CardQuantity.Returns(cardQuantity);
+                packSettings.RandomQuantity.Returns(cardQuantity);
                 packSettings.CardPools.Returns(cardPools);
                 return packSettings;
             }
@@ -57,13 +58,14 @@ namespace GameTests.BoosterPack
                 return cardPoolSettings;
             }
             
-            protected IPackSettings CreateSettings (
+            protected IPackSettings CreatePackSettings (
                 List<int> cardIds,
                 CardRarity rarity,
                 float chance,
                 int uid,
                 string name,
-                int cardQuantity)
+                int? cardQuantity
+            )
             {
                 ICardPoolSettings cardPoolSettings = SetupCardPoolSettings(rarity, chance, cardIds);
                 return SetupPackSettings(uid, name, cardQuantity, new List<ICardPoolSettings> { cardPoolSettings });
@@ -73,13 +75,25 @@ namespace GameTests.BoosterPack
         class PublicProperties : BaseBoosterPackModelTests
         {
             [Test]
+            public void Packs ()
+            {
+                const string NAME = "Pack1";
+                IPackSettings pack1 = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, 1, NAME, 1);
+                IPackSettings pack2 = CreatePackSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, 2, "Pack2", 2);
+                SetupBoosterPackSettings(new List<IPackSettings> { pack1, pack2 });
+                
+                Assert.AreEqual(2, Model.Packs.Count);
+                Assert.AreEqual(NAME, Model.Packs[0].Name);
+            }
+            
+            [Test]
             public void CurrentPackName ()
             {
                 const int UID = 2;
                 const string PACK_NAME = "Pack2";
 
-                IPackSettings pack1 = CreateSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, 1, "Pack1", 1);
-                IPackSettings pack2 = CreateSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, UID, PACK_NAME, 2);
+                IPackSettings pack1 = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, 1, "Pack1", 1);
+                IPackSettings pack2 = CreatePackSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, UID, PACK_NAME, 2);
                 SetupBoosterPackSettings(new List<IPackSettings> { pack1, pack2 });
                 
                 Model.UpdateCurrentPack(UID);
@@ -88,18 +102,35 @@ namespace GameTests.BoosterPack
             }
 
             [Test]
-            public void CurrentCardQuantity ()
+            public void CurrentCardQuantity_By_RandomQuantity ()
             {
-                const int UID = 1;
                 const int QUANTITY = 5;
 
-                IPackSettings pack1 = CreateSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, UID, "Pack1", QUANTITY);
-                IPackSettings pack2 = CreateSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, 2, "Pack2", 2);
-                SetupBoosterPackSettings(new List<IPackSettings> { pack1, pack2 });
+                IPackSettings pack = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, 1, "Pack1", QUANTITY);
+                SetupBoosterPackSettings(new List<IPackSettings> { pack });
                 
-                Model.UpdateCurrentPack(UID);
+                Model.UpdateCurrentPack(1);
                 
                 Assert.AreEqual(QUANTITY, Model.CurrentCardQuantity);
+            }
+            
+            [Test]
+            public void CurrentCardQuantity_By_CardSpots ()
+            {
+                List<ICardSelectionSettings> cardSpots = new()
+                {
+                    new CardSelectionSettings(CardSelectionType.Fixed, CardRarity.Normal),
+                    new CardSelectionSettings(CardSelectionType.GreaterOrEqual, CardRarity.Normal),
+                    new CardSelectionSettings(CardSelectionType.GreaterOrEqual, CardRarity.Rare)
+                };
+                
+                IPackSettings pack = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, 1, "Pack1", null);
+                pack.CardSpots.Returns(cardSpots);
+                SetupBoosterPackSettings(new List<IPackSettings> { pack });
+                
+                Model.UpdateCurrentPack(1);
+                
+                Assert.AreEqual(cardSpots.Count, Model.CurrentCardQuantity);
             }
         }
 
@@ -111,7 +142,7 @@ namespace GameTests.BoosterPack
                 const int UID = 1;
                 const string PACK_NAME = "Pack1";
 
-                IPackSettings pack = CreateSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, UID, PACK_NAME, 1);
+                IPackSettings pack = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, UID, PACK_NAME, 1);
                 SetupBoosterPackSettings(new List<IPackSettings> { pack });
                 
                 Assert.AreEqual(PACK_NAME, Model.GetPackNameByUid(UID));
@@ -124,8 +155,8 @@ namespace GameTests.BoosterPack
                 const int UID = 2;
                 const string PACK_NAME = "Pack2";
 
-                IPackSettings pack1 = CreateSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, CURRENT_UID, "Pack1", 1);
-                IPackSettings pack2 = CreateSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, UID, PACK_NAME, 2);
+                IPackSettings pack1 = CreatePackSettings(new List<int> { 1, 2, 3 }, CardRarity.Normal, 1, CURRENT_UID, "Pack1", 1);
+                IPackSettings pack2 = CreatePackSettings(new List<int> { 4, 5, 6 }, CardRarity.Normal, 1, UID, PACK_NAME, 2);
                 SetupBoosterPackSettings(new List<IPackSettings> { pack1, pack2 });
                 
                 Model.UpdateCurrentPack(CURRENT_UID);
@@ -136,16 +167,23 @@ namespace GameTests.BoosterPack
             }
         }
 
-        class GetCardFromPool : BaseBoosterPackModelTests
+        class GenerateCard : BaseBoosterPackModelTests
         {
             void SetupSettings ()
             {
+                List<ICardSelectionSettings> cardSpots = new()
+                {
+                    new CardSelectionSettings(CardSelectionType.Fixed, CardRarity.Normal),
+                    new CardSelectionSettings(CardSelectionType.GreaterOrEqual, CardRarity.Rare)
+                };
+                
                 List<int> cardIds1 = new() { 1, 2, 3 };
                 ICardPoolSettings pool1 = SetupCardPoolSettings(CardRarity.Normal, 0.6f, cardIds1);
                 List<int> cardIds2 = new() { 4, 5, 6 };
                 ICardPoolSettings pool2 = SetupCardPoolSettings(CardRarity.Rare, 0.4f, cardIds2);
                 List<ICardPoolSettings> poolSettings1 = new() { pool1, pool2 };
-                IPackSettings pack1 = SetupPackSettings(1, "Pack1", 3, poolSettings1);
+                IPackSettings guaranteedPack = SetupPackSettings(1, "Pack1", null, poolSettings1);
+                guaranteedPack.CardSpots.Returns(cardSpots);
 
                 List<int> cardIds3 = new() { 7, 8, 9 };
                 ICardPoolSettings pool3 = SetupCardPoolSettings(CardRarity.Normal, 0.7f, cardIds3);
@@ -154,43 +192,125 @@ namespace GameTests.BoosterPack
                 List<int> cardIds5 = new() { 13, 14, 15, 16 };
                 ICardPoolSettings pool5 = SetupCardPoolSettings(CardRarity.SuperRare, 0.1f, cardIds5);
                 List<ICardPoolSettings> poolSettings2 = new() { pool3, pool4, pool5 };
-                IPackSettings pack2 = SetupPackSettings(2, "Pack2", 5, poolSettings2);
+                IPackSettings randomPack = SetupPackSettings(2, "Pack2", 5, poolSettings2);
+                randomPack.CardSpots.Returns((IReadOnlyList<CardSelectionSettings>)null);
 
-                Settings.Packs.Returns(new List<IPackSettings> { pack1, pack2 });
+                Settings.Packs.Returns(new List<IPackSettings> { guaranteedPack, randomPack });
             }
             
             [Test]
-            public void GetCardFromPool_Returns_Correct_Rarity ()
+            public void GenerateCard_By_Random_Returns_Correct_Rarity ()
             {
                 const CardRarity RARITY = CardRarity.SuperRare;
                 
                 SetupSettings();
 
-                List<WeightedObject<CardRarity>> weightedObjects = new()
-                {
-                    new WeightedObject<CardRarity>(CardRarity.Normal, 0.7f),
-                    new WeightedObject<CardRarity>(CardRarity.Rare, 0.2f),
-                    new WeightedObject<CardRarity>(CardRarity.SuperRare, 0.1f)
-                };
-                
                 Model.UpdateCurrentPack(2);
 
-                RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>())
-                    .Returns(RARITY);
+                RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>()).Returns(RARITY);
                 RandomProvider.Range(0, 4).Returns(3);
 
                 ICardModel expectedCard = Substitute.For<ICardModel>();
                 expectedCard.Uid.Returns(16);
-                expectedCard.Type.Returns(CardType.Magic);
-                expectedCard.Name.Returns("Test");
-                expectedCard.Description.Returns("Description");
 
                 CardManagerModel.GetCardByUid(16).Returns(expectedCard);
 
-                ICardModel selectedCard = Model.GetCardFromPool();
+                ICardModel selectedCard = Model.GenerateCard(0);
                 
                 Assert.AreEqual(expectedCard, selectedCard);
-                Assert.AreEqual(RARITY, selectedCard.CurrentRarity);
+                selectedCard.Received().AssignRarity(RARITY);
+            }
+            
+            [Test]
+            public void GenerateCard_By_Random_Throws_Exception_If_Card_Not_Found ()
+            {
+                SetupSettings();
+
+                Model.UpdateCurrentPack(2);
+
+                RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>())
+                    .Returns(CardRarity.SuperRare);
+                RandomProvider.Range(0, 4).Returns(3);
+                
+                CardManagerModel.GetCardByUid(16).Returns((ICardModel)null);
+
+                Assert.Throws<InvalidOperationException>(() => Model.GenerateCard(0));
+            }
+            
+            [Test]
+            public void GenerateCard_By_Fixed_CardSpot_Returns_Correct_Rarity ()
+            {
+                const CardRarity RARITY = CardRarity.Normal;
+                
+                SetupSettings();
+
+                Model.UpdateCurrentPack(1);
+                
+                RandomProvider.Range(0, 3).Returns(1);
+
+                ICardModel expectedCard = Substitute.For<ICardModel>();
+                expectedCard.Uid.Returns(2);
+
+                CardManagerModel.GetCardByUid(2).Returns(expectedCard);
+
+                ICardModel selectedCard = Model.GenerateCard(0);
+                
+                Assert.AreEqual(expectedCard, selectedCard);
+                selectedCard.Received().AssignRarity(RARITY);
+            }
+            
+            [Test]
+            public void GenerateCard_By_GreaterOrEqual_CardSpot_Returns_Correct_Rarity ()
+            {
+                const CardRarity RARITY = CardRarity.Rare;
+                
+                SetupSettings();
+
+                Model.UpdateCurrentPack(1);
+                
+                //TODO test figure out a more solid way to check this call
+                RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>()).Returns(RARITY);
+                RandomProvider.Range(0, 3).Returns(0);
+
+                ICardModel expectedCard = Substitute.For<ICardModel>();
+                expectedCard.Uid.Returns(4);
+
+                CardManagerModel.GetCardByUid(4).Returns(expectedCard);
+
+                ICardModel selectedCard = Model.GenerateCard(1);
+                
+                Assert.AreEqual(expectedCard, selectedCard);
+                selectedCard.Received().AssignRarity(RARITY);
+            }
+            
+            [Test]
+            public void GenerateCard_By_Fixed_CardSpot_Throws_Exception_If_Card_Not_Found ()
+            {
+                SetupSettings();
+
+                Model.UpdateCurrentPack(1);
+                
+                RandomProvider.Range(0, 3).Returns(1);
+
+                CardManagerModel.GetCardByUid(2).Returns((ICardModel)null);
+
+                Assert.Throws<InvalidOperationException>(() => Model.GenerateCard(0));
+            }
+            
+            [Test]
+            public void GenerateCard_By_GreaterOrEqual_CardSpot_Throws_Exception_If_Card_Not_Found ()
+            {
+                SetupSettings();
+
+                Model.UpdateCurrentPack(1);
+                
+                //TODO test figure out a more solid way to check this call
+                RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>()).Returns(CardRarity.Rare);
+                RandomProvider.Range(0, 3).Returns(0);
+
+                CardManagerModel.GetCardByUid(4).Returns((ICardModel)null);
+
+                Assert.Throws<InvalidOperationException>(() => Model.GenerateCard(1));
             }
         }
     }

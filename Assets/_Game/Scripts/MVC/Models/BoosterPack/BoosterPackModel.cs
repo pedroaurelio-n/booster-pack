@@ -92,7 +92,7 @@ public class BoosterPackModel : IBoosterPackModel
         int randomIndex = _randomProvider.Range(0, poolSettings.Ids.Count);
 
         ICardModel selectedCard = _cardManagerModel.GetCardByUid(poolSettings.Ids[randomIndex]);
-        selectedCard.AssignRarity(rarity);
+        selectedCard?.AssignRarity(rarity);
 
         return selectedCard;
     }
