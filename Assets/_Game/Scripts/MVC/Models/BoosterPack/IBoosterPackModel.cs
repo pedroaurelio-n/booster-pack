@@ -8,5 +8,5 @@ public interface IBoosterPackModel
 
     void UpdateCurrentPack (int uid);
     string GetPackNameByUid (int uid);
-    ICardModel GetCardFromPool ();
+    ICardModel GenerateCard (int currentSpot);
 }

@@ -53,7 +53,7 @@ public class CardController
 
     void SetPositionX (int index, int cardCount)
     {
-        float posX = (index - (cardCount + 1) * 0.5f ) * SPACING;
+        float posX = ((index + 1) - (cardCount + 1) * 0.5f ) * SPACING;
         _view.transform.position = new Vector3(posX, 2.5f, 0);
     }
 }

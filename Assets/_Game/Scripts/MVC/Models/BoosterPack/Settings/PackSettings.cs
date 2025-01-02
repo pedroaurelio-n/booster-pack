@@ -6,12 +6,16 @@ public class PackSettings : IPackSettings
 {
     [JsonProperty]
     public int Uid { get; }
+    
     [JsonProperty]
     public string Name { get; }
     
-    [JsonProperty]
-    public int CardQuantity { get; }
+    [JsonProperty("cardQuantity")]
+    public int? RandomQuantity { get; }
     
+    [JsonProperty]
+    public IReadOnlyList<ICardSelectionSettings> CardSpots { get; }
+
     [JsonProperty]
     public IReadOnlyList<ICardPoolSettings> CardPools { get; }
 
@@ -19,13 +23,15 @@ public class PackSettings : IPackSettings
     public PackSettings (
         int uid,
         string name,
-        int cardQuantity,
+        int? cardQuantity,
+        CardSelectionSettings[] cardSpots,
         CardPoolSettings[] cardPools
     )
     {
         Uid = uid;
         Name = name;
-        CardQuantity = cardQuantity;
+        RandomQuantity = cardQuantity;
+        CardSpots = cardSpots;
         CardPools = cardPools;
     }
 }

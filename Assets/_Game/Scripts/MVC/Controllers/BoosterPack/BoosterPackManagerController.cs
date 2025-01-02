@@ -52,7 +52,7 @@ public class BoosterPackManagerController
     void SetupPool ()
     {
         _uiViewFactory.SetupPool(
-            nameof(BoosterPackManagerController),
+            nameof(CardView),
             Resources.Load<CardView>("CardView"),
             _mapView.CardContainer
         );
@@ -71,7 +71,7 @@ public class BoosterPackManagerController
 
         for (int i = 0; i < missingCount; i++)
         {
-            CardController controller = new(_uiViewFactory.GetView<CardView>(nameof(BoosterPackManagerController)));
+            CardController controller = new(_uiViewFactory.GetView<CardView>(nameof(CardView)));
             _cardControllers.Add(controller);
         }
     }
@@ -90,8 +90,8 @@ public class BoosterPackManagerController
                 controller.SetViewActive(false);
                 continue;
             }
-            controller.UpdateModel(_model.GetCardFromPool());
-            controller.Initialize(i + 1, target);
+            controller.UpdateModel(_model.GenerateCard(i));
+            controller.Initialize(i, target);
         }
     }
 
