@@ -11,10 +11,13 @@ public class MouseInputModel : IMouseInputModel
     IMouseInteractable _currentInteractable;
     IMouseClickable _currentClickable;
     Collider _currentCollider;
+    LayerMask _interactableLayer;
 
     public MouseInputModel (IPhysicsProvider physicsProvider)
     {
         _physicsProvider = physicsProvider;
+        //TODO find a better way to get the layer, maybe with game settings
+        _interactableLayer = LayerMask.GetMask($"Interactable");
     }
 
     public void SetMainCamera (Camera mainCamera) => _mainCamera = mainCamera;
@@ -45,7 +48,7 @@ public class MouseInputModel : IMouseInputModel
     {
         Ray ray = _mainCamera.ScreenPointToRay(CurrentPosition);
 
-        if (_physicsProvider.Raycast(ray, out RaycastHit hit))
+        if (_physicsProvider.Raycast(ray, _interactableLayer, out RaycastHit hit))
         {
             if (hit.collider == _currentCollider)
                 return;
