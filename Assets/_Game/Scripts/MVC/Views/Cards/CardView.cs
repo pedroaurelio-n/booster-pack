@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : PoolableView
+public class CardView : PoolableView, IMouseInteractable
 {
+    public event Action OnEntered;
+    public event Action OnExited;
+    
     [field: Header("Components")]
     [field: SerializeField] public CardAnimationView CardAnimation { get; private set; }
-    [SerializeField] ParticleSystem rarityParticles;
-    
-    //TODO move into a scriptable object or settings class
-    [Header("Colors")]
-    [SerializeField] List<CardTypeColors> typeColors;
-    [SerializeField] List<CardRarityColors> rarityColors;
+    [field: SerializeField] public ParticleSystem RarityParticles { get; private set; }
     
     [field: Header("Contents")]
     [SerializeField] TextMeshProUGUI titleText;
@@ -29,20 +25,6 @@ public class CardView : PoolableView
     [SerializeField] Image[] coloredElements;
 
     CardRarity _rarity;
-
-    public void PlayParticles ()
-    {
-        Color selectedColor = rarityColors.FirstOrDefault(x => x.Rarity == _rarity).Color;
-
-        if (selectedColor == default)
-            throw new InvalidOperationException($"Desired rarity {_rarity} doesn't have a color configured.");
-
-        ParticleSystem.MainModule main = rarityParticles.main;
-        main.startColor = selectedColor;
-        rarityParticles.Play();
-    }
-
-    public void StopParticles () => rarityParticles.Stop();
 
     public void SetTitleText (string text) => titleText.text = text;
 
@@ -62,17 +44,12 @@ public class CardView : PoolableView
 
     public void SetArtSprite (Sprite sprite) => artIcon.sprite = sprite;
 
-    public void SetColor (CardType type)
+    public void SetColor (Color color)
     {
-        Color selectedColor = typeColors.FirstOrDefault(x => x.Type == type).Color;
-
-        if (selectedColor == default)
-            throw new InvalidOperationException($"Desired type {type} doesn't have a color configured.");
-        
         foreach (Image element in coloredElements)
         {
-            Color alphalessColor = new(selectedColor.r, selectedColor.g, selectedColor.b, element.color.a);
-            element.color = alphalessColor;
+            color.a = element.color.a;
+            element.color = color;
         }
     }
 
@@ -116,10 +93,14 @@ public class CardView : PoolableView
         defenseText.text = defense.ToString();
     }
 
-    //TODO ideally not needed
+    //TODO pedro: Ideally not needed
     public void SetRarity (CardRarity rarity) => _rarity = rarity;
 
     public void SetActiveState (bool value) => gameObject.SetActive(value);
+    
+    public void OnEnter () => OnEntered?.Invoke();
+
+    public void OnExit () => OnExited?.Invoke();
 
     [Serializable]
     public struct CardTypeColors
