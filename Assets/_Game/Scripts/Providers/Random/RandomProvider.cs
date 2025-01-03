@@ -47,7 +47,7 @@ public class RandomProvider : IRandomProvider
 
     public T WeightedRandom<T> (List<WeightedObject<T>> weightedList)
     {
-        //TODO: check for optimization possibilities
+        //TODO pedro: check for optimization possibilities
         float totalWeight = 0;
         foreach (WeightedObject<T> weightObject in weightedList)
             totalWeight += weightObject.Weight;

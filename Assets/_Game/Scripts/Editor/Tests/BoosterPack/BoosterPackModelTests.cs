@@ -268,7 +268,7 @@ namespace GameTests.BoosterPack
 
                 Model.UpdateCurrentPack(1);
                 
-                //TODO test figure out a more solid way to check this call
+                //TODO pedro test: Figure out a more solid way to check this call
                 RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>()).Returns(RARITY);
                 RandomProvider.Range(0, 3).Returns(0);
 
@@ -304,7 +304,7 @@ namespace GameTests.BoosterPack
 
                 Model.UpdateCurrentPack(1);
                 
-                //TODO test figure out a more solid way to check this call
+                //TODO pedro test: Figure out a more solid way to check this call
                 RandomProvider.WeightedRandom(Arg.Any<List<WeightedObject<CardRarity>>>()).Returns(CardRarity.Rare);
                 RandomProvider.Range(0, 3).Returns(0);
 

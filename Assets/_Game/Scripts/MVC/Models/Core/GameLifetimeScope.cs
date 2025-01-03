@@ -8,7 +8,7 @@ public class GameLifetimeScope : LifetimeScope
     public GameController GameController { get; private set; }
     public GameUIView GameUIView { get; private set; }
     
-    //TODO: Separate Game scope from Map scope
+    //TODO pedro: Separate Game scope from Map scope
     public MapView MapView { get; private set; }
     
     public SettingsManager SettingsManager { get; private set; }

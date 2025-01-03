@@ -16,7 +16,7 @@ public class MouseInputModel : IMouseInputModel
     public MouseInputModel (IPhysicsProvider physicsProvider)
     {
         _physicsProvider = physicsProvider;
-        //TODO find a better way to get the layer, maybe with game settings
+        //TODO pedro: Find a better way to get the layer, maybe with game settings
         _interactableLayer = LayerMask.GetMask($"Interactable");
     }
 
@@ -41,7 +41,7 @@ public class MouseInputModel : IMouseInputModel
         if (_currentInteractable == null)
             return;
         
-        _currentClickable?.OnLeftClick();
+        _currentClickable?.OnRightClick();
     }
 
     void EvaluateRaycast ()

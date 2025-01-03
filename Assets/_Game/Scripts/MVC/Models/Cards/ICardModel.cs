@@ -9,6 +9,6 @@ public interface ICardModel
     int? Attack { get; }
     int? Defense { get; }
 
-    //TODO sketchy
+    //TODO pedro: Sketchy
     void AssignRarity (CardRarity rarity);
 }
