@@ -1,25 +1,23 @@
 using UnityEngine;
 using DG.Tweening;
-using static GameGlobalSettings.CardAnimation;
 
-public class CardAnimationView : MonoBehaviour, IMouseInteractable
+public class CardAnimationView : MonoBehaviour
 {
     [SerializeField] Transform targetTransform;
     
     Tween _rotateTween;
     Tween _scaleTween;
-
-    //TODO figure out dependency
-    CardView _cardView;
+    
     Transform _transform;
     Vector3 _initialScale;
-
-    public void Initialize (CardView cardView)
+    
+    CardAnimationOptions _options;
+    
+    public void Initialize ()
     {
+        _options = GameGlobalOptions.Instance.CardAnimation;
+        
         _transform = targetTransform != null ? targetTransform : transform;
-
-        _cardView = cardView;
-        _transform = transform;
         _initialScale = _transform.localScale;
     }
 
@@ -27,18 +25,19 @@ public class CardAnimationView : MonoBehaviour, IMouseInteractable
     {
         KillTweens();
         
-        _scaleTween = _transform.DOScale(_initialScale, SCALE_DURATION).SetEase(SCALE_EASING);
+        _scaleTween = _transform.DOScale(_initialScale, _options.ScaleDuration).SetEase(_options.ScaleEasing);
         
-        _rotateTween = _transform.DORotate(new Vector3(0, 360f, 0), ROTATION_DURATION)
-            .SetRelative().SetLoops(-1, LoopType.Incremental).SetEase(ROTATION_EASING);
+        _rotateTween = _transform.DORotate(new Vector3(0, 360f, 0), _options.RotationDuration)
+            .SetRelative().SetLoops(-1, LoopType.Incremental).SetEase(_options.RotationEasing);
     }
 
     public void ResetRotationAndZoomIn ()
     {
         KillTweens();
         
-        _rotateTween = _transform.DORotate(Vector3.zero, RESET_DURATION).SetEase(RESET_EASING);
-        _scaleTween = _transform.DOScale(_initialScale * SCALE_MULTIPLIER, SCALE_DURATION).SetEase(SCALE_EASING);
+        _rotateTween = _transform.DORotate(Vector3.zero, _options.ResetDuration).SetEase(_options.ResetEasing);
+        _scaleTween = _transform.DOScale(_initialScale * _options.ScaleMultiplier, _options.ScaleDuration)
+            .SetEase(_options.ScaleEasing);
     }
 
     public void StopRotation ()
@@ -47,19 +46,6 @@ public class CardAnimationView : MonoBehaviour, IMouseInteractable
 
         _transform.rotation = Quaternion.Euler(Vector3.zero);
         _transform.localScale = _initialScale;
-    }
-
-    //TODO move to CardView
-    public void OnEnter ()
-    {
-        _cardView.PlayParticles();
-        ResetRotationAndZoomIn();
-    }
-
-    public void OnExit ()
-    {
-        _cardView.StopParticles();
-        StartRotationAndResetScale();
     }
 
     void KillTweens ()

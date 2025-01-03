@@ -1247,19 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CardAnimation>k__BackingField: {fileID: 3450573601919609860}
-  rarityParticles: {fileID: 6987023148507750657}
-  typeColors:
-  - Type: 0
-    Color: {r: 0.6313726, g: 0.40784314, b: 0.39607844, a: 1}
-  - Type: 1
-    Color: {r: 0.40784314, g: 0.54901963, b: 0.7176471, a: 1}
-  rarityColors:
-  - Rarity: 0
-    Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-  - Rarity: 1
-    Color: {r: 0.8773585, g: 0.68995625, b: 0.38487893, a: 1}
-  - Rarity: 2
-    Color: {r: 0.6500533, g: 0.34963512, b: 0.764151, a: 1}
+  <RarityParticles>k__BackingField: {fileID: 6987023148507750657}
   titleText: {fileID: 500230663032645202}
   descriptionText: {fileID: 767452032101035082}
   starIcons:
