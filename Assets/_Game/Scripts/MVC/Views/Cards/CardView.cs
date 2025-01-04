@@ -24,8 +24,6 @@ public class CardView : PoolableView, IMouseInteractable
     [SerializeField] TextMeshProUGUI defenseText;
     [SerializeField] Image[] coloredElements;
 
-    CardRarity _rarity;
-
     public void SetTitleText (string text) => titleText.text = text;
 
     public void SetDescriptionText (string text) => descriptionText.text = text;
@@ -92,9 +90,6 @@ public class CardView : PoolableView, IMouseInteractable
         defenseContainer.SetActive(true);
         defenseText.text = defense.ToString();
     }
-
-    //TODO pedro: Ideally not needed
-    public void SetRarity (CardRarity rarity) => _rarity = rarity;
 
     public void SetActiveState (bool value) => gameObject.SetActive(value);
     

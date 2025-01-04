@@ -6,18 +6,18 @@ public class MouseInputModel : IMouseInputModel
     public bool IsHoveringInteractable => _currentInteractable != null;
 
     readonly IPhysicsProvider _physicsProvider;
+    readonly LayerMasksOptions _options;
 
     Camera _mainCamera;
     IMouseInteractable _currentInteractable;
     IMouseClickable _currentClickable;
     Collider _currentCollider;
-    LayerMask _interactableLayer;
 
     public MouseInputModel (IPhysicsProvider physicsProvider)
     {
+        _options = GameGlobalOptions.Instance.LayerMasks;
+        
         _physicsProvider = physicsProvider;
-        //TODO pedro: Find a better way to get the layer, maybe with game settings
-        _interactableLayer = LayerMask.GetMask($"Interactable");
     }
 
     public void SetMainCamera (Camera mainCamera) => _mainCamera = mainCamera;
@@ -48,7 +48,7 @@ public class MouseInputModel : IMouseInputModel
     {
         Ray ray = _mainCamera.ScreenPointToRay(CurrentPosition);
 
-        if (_physicsProvider.Raycast(ray, _interactableLayer, out RaycastHit hit))
+        if (_physicsProvider.Raycast(ray, _options.InteractableLayers, out RaycastHit hit))
         {
             if (hit.collider == _currentCollider)
                 return;

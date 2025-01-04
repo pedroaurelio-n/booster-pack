@@ -53,7 +53,6 @@ public class CardController
         _view.SetArtSprite(cardSprite);
         _view.SetAttack(_model.Attack);
         _view.SetDefense(_model.Defense);
-        _view.SetRarity(_model.CurrentRarity);
         SetColor();
     }
 
