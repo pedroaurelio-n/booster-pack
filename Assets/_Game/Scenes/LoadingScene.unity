@@ -544,11 +544,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666f8eafb08e3ff45ba04b425697951d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingCanvas: {fileID: 767869155}
+  loadingSceneObjects:
+  - {fileID: 767869152}
+  - {fileID: 1328844814}
+  - {fileID: 1369941480}
+  loadingUIObjects:
+  - {fileID: 1711114447}
   fadeToBlackObject: {fileID: 428395929}
   startButton: {fileID: 2084295835827368551}
-  loadingObjects:
-  - {fileID: 1711114447}
   loadingNumber: {fileID: 2029973325}
   loadingFillBar: {fileID: 395721896}
 --- !u!4 &747553369
@@ -892,7 +895,7 @@ GameObject:
   - component: {fileID: 1328844816}
   - component: {fileID: 1328844818}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -957,7 +960,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328844814}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1739,8 +1742,8 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1328844817}
   - {fileID: 747553369}
   - {fileID: 767869156}
   - {fileID: 333750511}
+  - {fileID: 1328844817}
   - {fileID: 1369941483}

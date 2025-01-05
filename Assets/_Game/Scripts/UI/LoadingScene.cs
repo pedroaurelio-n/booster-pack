@@ -10,11 +10,11 @@ public class LoadingScene : MonoBehaviour
     const string PERCENTAGE_FORMAT = "{0}%";
     const float LOADING_SPEED = 0.1f;
     const float FADE_DURATION = 0.8f;
-
-    [SerializeField] Canvas loadingCanvas;
+    
+    [SerializeField] GameObject[] loadingSceneObjects;
+    [SerializeField] GameObject[] loadingUIObjects;
     [SerializeField] CanvasGroup fadeToBlackObject;
     [SerializeField] Button startButton;
-    [SerializeField] GameObject[] loadingObjects;
     [SerializeField] TextMeshProUGUI loadingNumber;
     [SerializeField] Image loadingFillBar;
 
@@ -30,7 +30,7 @@ public class LoadingScene : MonoBehaviour
         {
             startButton.onClick.AddListener(StartLoading);
             
-            foreach (GameObject obj in loadingObjects)
+            foreach (GameObject obj in loadingUIObjects)
                 obj.SetActive(false);
             
             return;
@@ -44,18 +44,20 @@ public class LoadingScene : MonoBehaviour
         if (startButton != null)
             startButton.gameObject.SetActive(false);
         
-        foreach (GameObject obj in loadingObjects)
+        foreach (GameObject obj in loadingUIObjects)
             obj.SetActive(true);
 
         UpdateLoadingUI();
 
-        mainSceneLoad = SceneManager.LoadSceneAsync("MainScene", LoadSceneMode.Additive);
+        mainSceneLoad = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Additive);
         StartCoroutine(UpdateLoadingProgress(mainSceneLoad, null));
     }
 
     void CompleteLoad ()
     {
-        loadingCanvas.gameObject.SetActive(false);
+        foreach (GameObject obj in loadingSceneObjects)
+            obj.SetActive(false);
+        
         FadeOut();
     }
 
