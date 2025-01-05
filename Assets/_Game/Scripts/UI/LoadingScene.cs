@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LoadingScene : MonoBehaviour
 {
     const string PERCENTAGE_FORMAT = "{0}%";
-    const float LOADING_SPEED = 0.1f;
+    const float LOADING_SPEED = 0.5f;
     const float FADE_DURATION = 0.8f;
     
     [SerializeField] GameObject[] loadingSceneObjects;
@@ -18,11 +18,11 @@ public class LoadingScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI loadingNumber;
     [SerializeField] Image loadingFillBar;
 
-    float loadingProgress;
-    float targetProgress;
+    float _loadingProgress;
+    float _targetProgress;
 
-    AsyncOperation mainSceneLoad;
-    AsyncOperation loadingSceneUnload;
+    AsyncOperation _mainSceneLoad;
+    AsyncOperation _loadingSceneUnload;
     
     void Awake ()
     {
@@ -49,8 +49,8 @@ public class LoadingScene : MonoBehaviour
 
         UpdateLoadingUI();
 
-        mainSceneLoad = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Additive);
-        StartCoroutine(UpdateLoadingProgress(mainSceneLoad, null));
+        _mainSceneLoad = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Additive);
+        StartCoroutine(UpdateLoadingProgress(_mainSceneLoad, null));
     }
 
     void CompleteLoad ()
@@ -65,18 +65,18 @@ public class LoadingScene : MonoBehaviour
     {
         loadOperation.allowSceneActivation = false;
         
-        while (loadingProgress < 100)
+        while (_loadingProgress < 100)
         {
             float loadProgress = loadOperation.progress < 0.9f ? loadOperation.progress : 1f;
             float unloadProgress = unloadOperation?.progress ?? 1f;
             float unloadWeight = unloadOperation != null ? 0.5f : 0f;
             float loadWeight = 1f - unloadWeight;
             
-            targetProgress = Mathf.RoundToInt((loadProgress * loadWeight + unloadProgress * unloadWeight) * 100);
+            _targetProgress = Mathf.RoundToInt((loadProgress * loadWeight + unloadProgress * unloadWeight) * 100);
 
-            while (loadingProgress < targetProgress && targetProgress != 0)
+            while (_loadingProgress < _targetProgress && _targetProgress != 0)
             {
-                loadingProgress += LOADING_SPEED;
+                _loadingProgress += LOADING_SPEED;
                 UpdateLoadingUI();
                 yield return null;
             }
@@ -85,7 +85,7 @@ public class LoadingScene : MonoBehaviour
             yield return null;
         }
         
-        loadingProgress = 100;
+        _loadingProgress = 100;
         UpdateLoadingUI();
 
         FadeIn().OnComplete(() => loadOperation.allowSceneActivation = true);
@@ -98,8 +98,8 @@ public class LoadingScene : MonoBehaviour
 
     void UpdateLoadingUI ()
     {
-        loadingNumber.text = string.Format(PERCENTAGE_FORMAT, Mathf.RoundToInt(loadingProgress));
-        loadingFillBar.fillAmount = loadingProgress / 100;
+        loadingNumber.text = string.Format(PERCENTAGE_FORMAT, Mathf.RoundToInt(_loadingProgress));
+        loadingFillBar.fillAmount = _loadingProgress / 100;
     }
     
     //TODO pedro: isolate fade to it's own class
