@@ -3,6 +3,7 @@ using VContainer.Unity;
 
 public class GameInstaller : IInstaller
 {
+    readonly LoadingManager _loadingManager;
     readonly GameUIView _gameUIView;
     readonly MapView _mapView;
     readonly UIViewFactory _uiViewFactory;
@@ -11,6 +12,7 @@ public class GameInstaller : IInstaller
     readonly IPhysicsProvider _physicsProvider;
     
     public GameInstaller (
+        LoadingManager loadingManager,
         GameUIView gameUIView,
         MapView mapView,
         UIViewFactory uiViewFactory,
@@ -19,6 +21,7 @@ public class GameInstaller : IInstaller
         IPhysicsProvider physicsProvider
     )
     {
+        _loadingManager = loadingManager;
         _gameUIView = gameUIView;
         _mapView = mapView;
         _uiViewFactory = uiViewFactory;
@@ -31,6 +34,7 @@ public class GameInstaller : IInstaller
     {
         builder.RegisterInstance(_settingsManager.CardListSettings.Instance);
         builder.RegisterInstance(_settingsManager.BoosterPackSettings.Instance);
+        builder.RegisterInstance(_loadingManager);
         builder.RegisterInstance(_randomProvider);
         builder.RegisterInstance(_physicsProvider);
         
@@ -49,6 +53,5 @@ public class GameInstaller : IInstaller
         
         builder.Register<BoosterPackManagerController>(Lifetime.Scoped);
         builder.Register<GameController>(Lifetime.Scoped);
-
     }
 }

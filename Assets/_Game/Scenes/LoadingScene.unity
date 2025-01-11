@@ -547,7 +547,6 @@ MonoBehaviour:
   loadingSceneObjects:
   - {fileID: 767869152}
   - {fileID: 1328844814}
-  - {fileID: 1369941480}
   loadingUIObjects:
   - {fileID: 1711114447}
   fadeToBlackObject: {fileID: 428395929}
