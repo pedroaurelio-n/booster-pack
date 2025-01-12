@@ -1,8 +1,8 @@
 public class SceneChangerModel : ISceneChangerModel
 {
-    readonly LoadingManager _loadingManager;
+    readonly ILoadingManager _loadingManager;
 
-    public SceneChangerModel (LoadingManager loadingManager)
+    public SceneChangerModel (ILoadingManager loadingManager)
     {
         _loadingManager = loadingManager;
     }

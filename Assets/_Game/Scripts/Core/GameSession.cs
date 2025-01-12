@@ -22,7 +22,7 @@ public class GameSession : IGameSessionInfoProvider, IDisposable
 
     GameLifetimeScope MainScope => GameLifetimeScope.Instance;
 
-    readonly LoadingManager _loadingManager;
+    readonly ILoadingManager _loadingManager;
 
     LifetimeScope _gameScope;
     
@@ -31,7 +31,7 @@ public class GameSession : IGameSessionInfoProvider, IDisposable
     IPhysicsProvider _physicsProvider;
     
     public GameSession (
-        LoadingManager loadingManager,
+        ILoadingManager loadingManager,
         string startScene
     )
     {

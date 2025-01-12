@@ -3,7 +3,7 @@ using VContainer.Unity;
 
 public class GameInstaller : IInstaller
 {
-    readonly LoadingManager _loadingManager;
+    readonly ILoadingManager _loadingManager;
     readonly IGameSessionInfoProvider _gameSessionInfoProvider;
     readonly GameUIView _gameUIView;
     readonly SceneView _sceneView;
@@ -13,7 +13,7 @@ public class GameInstaller : IInstaller
     readonly IPhysicsProvider _physicsProvider;
     
     public GameInstaller (
-        LoadingManager loadingManager,
+        ILoadingManager loadingManager,
         IGameSessionInfoProvider gameSessionInfoProvider,
         GameUIView gameUIView,
         SceneView sceneView,

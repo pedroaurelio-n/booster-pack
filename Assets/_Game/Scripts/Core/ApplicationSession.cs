@@ -6,9 +6,9 @@ public class ApplicationSession
     
     public GameSession GameSession { get; private set; }
 
-    readonly LoadingManager _loadingManager;
+    readonly ILoadingManager _loadingManager;
 
-    public ApplicationSession (LoadingManager loadingManager)
+    public ApplicationSession (ILoadingManager loadingManager)
     {
         _loadingManager = loadingManager;
     }

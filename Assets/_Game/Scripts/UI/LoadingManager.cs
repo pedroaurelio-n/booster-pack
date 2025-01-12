@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoadingManager : MonoBehaviour
+public class LoadingManager : MonoBehaviour, ILoadingManager
 {
     const string PERCENTAGE_FORMAT = "{0}%";
     const float LOADING_SPEED = 0.5f;
