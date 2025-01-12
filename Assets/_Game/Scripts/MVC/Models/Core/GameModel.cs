@@ -6,18 +6,21 @@ public class GameModel : IGameModel
     
     public ICardManagerModel CardManagerModel { get; }
     public IBoosterPackModel BoosterPackModel { get; }
+    public ISceneChangerModel SceneChangerModel { get; }
     
     public Camera MainCamera { get; private set; }
 
     public GameModel (
         IMouseInputModel mouseInputModel,
         ICardManagerModel cardManagerModel, 
-        IBoosterPackModel boosterPackModel
+        IBoosterPackModel boosterPackModel,
+        ISceneChangerModel sceneChangerModel
     )
     {
         MouseInputModel = mouseInputModel;
         CardManagerModel = cardManagerModel;
         BoosterPackModel = boosterPackModel;
+        SceneChangerModel = sceneChangerModel;
     }
 
     public void Initialize ()

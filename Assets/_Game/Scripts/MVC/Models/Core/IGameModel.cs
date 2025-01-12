@@ -6,6 +6,7 @@ public interface IGameModel
     
     ICardManagerModel CardManagerModel { get; }
     IBoosterPackModel BoosterPackModel { get; }
+    ISceneChangerModel SceneChangerModel { get; }
     
     Camera MainCamera { get; }
 

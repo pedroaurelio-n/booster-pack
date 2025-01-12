@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 545444933251891275}
   - component: {fileID: 814482379236084879}
   m_Layer: 0
-  m_Name: GameSceneView
+  m_Name: GameScene1View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

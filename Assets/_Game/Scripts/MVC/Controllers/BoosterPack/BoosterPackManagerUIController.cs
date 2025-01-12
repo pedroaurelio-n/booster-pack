@@ -1,26 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoosterPackManagerController
+public class BoosterPackManagerUIController
 {
     readonly IBoosterPackModel _model;
     readonly GameUIView _gameUIView;
-    readonly MapView _mapView;
+    readonly SceneView _sceneView;
     readonly UIViewFactory _uiViewFactory;
 
     List<BoosterPackPurchaseUIController> _packButtonControllers = new();
     List<CardController> _cardControllers;
 
-    public BoosterPackManagerController (
+    public BoosterPackManagerUIController (
         IBoosterPackModel model,
         GameUIView gameUIView,
-        MapView mapView,
+        SceneView sceneView,
         UIViewFactory uiViewFactory
     )
     {
         _model = model;
         _gameUIView = gameUIView;
-        _mapView = mapView;
+        _sceneView = sceneView;
         _uiViewFactory = uiViewFactory;
         
         SetupUIButtons();
@@ -54,7 +54,7 @@ public class BoosterPackManagerController
         _uiViewFactory.SetupPool(
             nameof(CardView),
             Resources.Load<CardView>("CardView"),
-            _mapView.CardContainer
+            _sceneView.CardContainer
         );
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEngine;
 
 public class CardManagerModel : ICardManagerModel
 {
@@ -30,5 +31,10 @@ public class CardManagerModel : ICardManagerModel
         int randomIndex = _randomProvider.Range(0, _settings.Cards.Count);
         int randomUid = _settings.Cards[randomIndex].Uid;
         return GetCardByUid(randomUid);
+    }
+
+    public void Dispose ()
+    {
+        Debug.Log($"DISPOSE CARDMANAGER");
     }
 }

@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
-public class GameSession : IDisposable
+public class GameSession : IGameSessionInfoProvider, IDisposable
 {
     public event Action OnInitializationComplete;
 
@@ -13,42 +14,43 @@ public class GameSession : IDisposable
     public GameUIView GameUIView { get; private set; }
     
     //TODO pedro: Separate Game scope from Map scope
-    public MapView MapView { get; private set; }
+    public SceneView SceneView { get; private set; }
     
+    public string CurrentScene { get; set; }
+
+    public int CurrentSceneIndex => SceneManager.GetSceneByName(CurrentScene).buildIndex;
+
     GameLifetimeScope MainScope => GameLifetimeScope.Instance;
 
     readonly LoadingManager _loadingManager;
 
-    LifetimeScope gameScope;
+    LifetimeScope _gameScope;
     
     SettingsManager _settingsManager;
     IRandomProvider _randomProvider;
     IPhysicsProvider _physicsProvider;
     
-    string _currentScene;
-
     public GameSession (
         LoadingManager loadingManager,
         string startScene
     )
     {
         _loadingManager = loadingManager;
-        _currentScene = startScene;
+        CurrentScene = startScene;
     }
 
-    public void LoadScene (string newScene) => _currentScene = newScene;
-    
     public void Initialize ()
     {
         CreateProviders();
-        gameScope = CreateGameScope();
+        _gameScope = CreateGameScope();
 
-        GameModel = gameScope.Container.Resolve<IGameModel>();
+        GameModel = _gameScope.Container.Resolve<IGameModel>();
         GameModel.Initialize();
     
-        GameController = gameScope.Container.Resolve<GameController>();
+        GameController = _gameScope.Container.Resolve<GameController>();
         GameController.Initialize();
 
+        GameUIView.FadeOut();
         OnInitializationComplete?.Invoke();
     }
     
@@ -63,15 +65,16 @@ public class GameSession : IDisposable
     {
         GameUIView = Object.Instantiate(Resources.Load<GameUIView>("GameUIView"));
         
-        MapView = Object.Instantiate(Resources.Load<MapView>($"{_currentScene}View"));
-        MapView.Initialize();
+        SceneView = Object.Instantiate(Resources.Load<SceneView>($"{CurrentScene}View"));
+        SceneView.Initialize();
     
         UIViewFactory uiViewFactory = new();
         
         GameInstaller installer = new(
             _loadingManager,
+            this,
             GameUIView,
-            MapView,
+            SceneView,
             uiViewFactory,
             _settingsManager,
             _randomProvider,
@@ -84,6 +87,6 @@ public class GameSession : IDisposable
     public void Dispose ()
     {
         Debug.Log($"DISPOSE GAME SESSION");
-        gameScope.Dispose();
+        _gameScope.Dispose();
     }
 }

@@ -7,22 +7,25 @@ public class ApplicationSession
     public GameSession GameSession { get; private set; }
 
     readonly LoadingManager _loadingManager;
-    readonly string _startScene;
 
-    public ApplicationSession (
-        LoadingManager loadingManager,
-        string startScene
-    )
+    public ApplicationSession (LoadingManager loadingManager)
     {
         _loadingManager = loadingManager;
-        _startScene = startScene;
     }
 
-    public void Initialize ()
+    public void Initialize (string currentScene)
     {
-        GameSession = new GameSession(_loadingManager, _startScene);
+        GameSession = new GameSession(_loadingManager, currentScene);
         GameSession.OnInitializationComplete += HandleInitializationComplete;
+        GameSession.CurrentScene = currentScene;
         GameSession.Initialize();
+    }
+
+    //TODO pedro: Maybe create a new class lower than GameSession (like GameCore) to dispose it instead of GameSession entirely
+    public void ChangeScene (string newScene)
+    {
+        GameSession.Dispose();
+        Initialize(newScene);
     }
 
     void HandleInitializationComplete ()

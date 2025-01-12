@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4360114541956954340}
-  - component: {fileID: 4360114541956954341}
+  - component: {fileID: -3659873639556905796}
   m_Layer: 5
-  m_Name: BoosterPackPurchaseUIView
+  m_Name: SceneChangerUIView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4360114541956954341
+--- !u!114 &-3659873639556905796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,11 +46,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4360114541956954347}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bedc98de28e451390aa637fe4f5c520, type: 3}
+  m_Script: {fileID: 11500000, guid: cb1d80c694e04f74ba623b83fc1f1fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 4360114542019738174}
-  nameText: {fileID: 4360114542679559433}
 --- !u!1 &4360114542019738147
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +236,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Booster Name
+  m_text: Change Scene
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

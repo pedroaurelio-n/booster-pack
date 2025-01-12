@@ -46,6 +46,9 @@ public class MouseInputModel : IMouseInputModel
 
     void EvaluateRaycast ()
     {
+        if (_mainCamera == null)
+            return;
+        
         Ray ray = _mainCamera.ScreenPointToRay(CurrentPosition);
 
         if (_physicsProvider.Raycast(ray, _options.InteractableLayers, out RaycastHit hit))

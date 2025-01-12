@@ -10,8 +10,10 @@ public class LoadingManager : MonoBehaviour
     const string PERCENTAGE_FORMAT = "{0}%";
     const float LOADING_SPEED = 0.5f;
     const float FADE_DURATION = 0.8f;
-    const string START_SCENE = "GameScene";
+    const string START_SCENE = "GameScene1";
     
+    public ApplicationSession ApplicationSession { get; private set; }
+
     [SerializeField] GameObject[] loadingSceneObjects;
     [SerializeField] GameObject[] loadingUIObjects;
     [SerializeField] CanvasGroup fadeToBlackObject;
@@ -23,15 +25,14 @@ public class LoadingManager : MonoBehaviour
     float _targetProgress;
 
     AsyncOperation _mainSceneLoad;
-    AsyncOperation _loadingSceneUnload;
+    AsyncOperation _currentSceneUnload;
+    string _newScene;
 
-    ApplicationSession _applicationSession;
-    
     void Awake ()
     {
         if (startButton != null && startButton.gameObject.activeInHierarchy)
         {
-            startButton.onClick.AddListener(() => StartLoading());
+            startButton.onClick.AddListener(() => StartLoading(false));
             
             foreach (GameObject obj in loadingUIObjects)
                 obj.SetActive(false);
@@ -39,14 +40,28 @@ public class LoadingManager : MonoBehaviour
             return;
         }
         
-        StartLoading();
+        StartLoading(false);
     }
 
-    public void LoadScene (string newScene) => StartLoading(newScene);
-
-    void StartLoading (string newScene = null)
+    public void LoadNewScene (string newScene)
     {
-        newScene ??= START_SCENE;
+        fadeToBlackObject.alpha = 1;
+        FadeOut().OnComplete(
+        () =>
+            {
+                foreach (GameObject obj in loadingSceneObjects)
+                    obj.SetActive(true);
+                
+                _newScene = newScene;
+                StartLoading(true);
+            }
+        );
+    }
+
+    void StartLoading (bool unloadCurrentScene)
+    {
+        _loadingProgress = 0;
+        _newScene ??= START_SCENE;
         
         if (startButton != null)
             startButton.gameObject.SetActive(false);
@@ -55,29 +70,26 @@ public class LoadingManager : MonoBehaviour
             obj.SetActive(true);
 
         UpdateLoadingUI();
+        
+        if (unloadCurrentScene)
+            _currentSceneUnload = SceneManager.UnloadSceneAsync(ApplicationSession.GameSession.CurrentScene);
 
-        _mainSceneLoad = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
-        StartCoroutine(UpdateLoadingProgress(_mainSceneLoad));
+        _mainSceneLoad = SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive);
+        StartCoroutine(UpdateLoadingProgress(_mainSceneLoad, _currentSceneUnload));
     }
 
     void CompleteLoad ()
     {
-        _applicationSession.OnInitializationComplete -= CompleteLoad;
+        ApplicationSession.OnInitializationComplete -= CompleteLoad;
         
         foreach (GameObject obj in loadingSceneObjects)
             obj.SetActive(false);
-        
-        FadeOut();
     }
 
-    IEnumerator UpdateLoadingProgress (AsyncOperation loadOperation, string unloadScene = null)
+    IEnumerator UpdateLoadingProgress (AsyncOperation loadOperation, AsyncOperation unloadOperation)
     {
         loadOperation.allowSceneActivation = false;
 
-        AsyncOperation unloadOperation = null;
-        if (unloadScene != null)
-            unloadOperation = SceneManager.UnloadSceneAsync(unloadScene);
-        
         while (_loadingProgress < 100)
         {
             float loadProgress = loadOperation.progress < 0.9f ? loadOperation.progress : 1f;
@@ -106,9 +118,19 @@ public class LoadingManager : MonoBehaviour
         while (!loadOperation.isDone)
             yield return null;
 
-        _applicationSession = new ApplicationSession(this, START_SCENE);
-        _applicationSession.OnInitializationComplete += CompleteLoad;
-        _applicationSession.Initialize();
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(_newScene));
+
+        if (unloadOperation == null)
+        {
+            ApplicationSession = new ApplicationSession(this);
+            ApplicationSession.OnInitializationComplete += CompleteLoad;
+            ApplicationSession.Initialize(START_SCENE);
+        }
+        else
+        {
+            ApplicationSession.OnInitializationComplete += CompleteLoad;
+            ApplicationSession.ChangeScene(_newScene);
+        }
     }
 
     void UpdateLoadingUI ()
