@@ -2,7 +2,7 @@
     "packs": [
         {
             "uid": 1,
-            "name": "Entirety Pack",
+            "name": "Booster Pack 1",
             "cardQuantity": 5,
             "cardPools": [
                 {
@@ -47,7 +47,7 @@
         },
         {
             "uid": 2,
-            "name": "Guaranteed Pack",
+            "name": "Booster Pack 2",
             "cardSpots": [
                 {
                     "type": 0,

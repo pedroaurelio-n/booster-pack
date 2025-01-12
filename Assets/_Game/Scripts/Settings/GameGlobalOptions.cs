@@ -9,6 +9,7 @@ public class GameGlobalOptions : ScriptableObject
     [field: SerializeField] public CardAnimationOptions CardAnimation { get; private set; }
     [field: SerializeField] public CardColorsOptions CardColors { get; private set; }
     [field: SerializeField] public LayerMasksOptions LayerMasks { get; private set; }
+    [field: SerializeField] public FadeTransitionOptions FadeTransition { get; private set; }
 
     public static GameGlobalOptions Instance
     {
@@ -67,4 +68,10 @@ public class CardColorsOptions
 public class LayerMasksOptions
 {
     [field: SerializeField] public LayerMask InteractableLayers { get; private set; }
+}
+
+[Serializable]
+public class FadeTransitionOptions
+{
+    [field: SerializeField] public float FadeDuration { get; private set; } = 0.8f;
 }
