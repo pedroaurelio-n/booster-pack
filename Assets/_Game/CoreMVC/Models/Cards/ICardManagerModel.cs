@@ -1,5 +1,3 @@
-using System;
-
 public interface ICardManagerModel
 {
     ICardModel GetCardByUid (int uid);

@@ -7,8 +7,8 @@ public class BoosterPackManagerUIController
     readonly GameUIView _gameUIView;
     readonly SceneView _sceneView;
     readonly UIViewFactory _uiViewFactory;
-
-    List<BoosterPackPurchaseUIController> _packButtonControllers = new();
+    readonly List<BoosterPackPurchaseUIController> _packButtonControllers = new();
+    
     List<CardController> _cardControllers;
 
     public BoosterPackManagerUIController (
