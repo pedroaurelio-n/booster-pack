@@ -1,6 +1,6 @@
 using System;
 
-public interface ICardManagerModel : IDisposable
+public interface ICardManagerModel
 {
     ICardModel GetCardByUid (int uid);
     ICardModel GetRandomCard ();

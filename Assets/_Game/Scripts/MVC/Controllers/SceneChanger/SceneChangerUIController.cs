@@ -37,21 +37,24 @@ public class SceneChangerUIController
         _view.OnClick += HandleViewClick;
     }
     
-    //TODO pedro: views don't neet to remove listeners yet because there's no persistent ui
+    //TODO pedro: views don't need to remove listeners yet because there's no persistent ui
     void RemoveViewListeners ()
     {
         _view.OnClick -= HandleViewClick;
     }
 
-    void HandleViewClick () => _gameUIView.FadeIn(ChangeScene);
-
-    void ChangeScene ()
+    void HandleViewClick ()
     {
-        string sceneName = _gameSessionInfoProvider.CurrentSceneIndex == 1
-            ? GetSceneNameFromBuildIndex(2)
-            : GetSceneNameFromBuildIndex(1);
+        _gameUIView.FadeToBlackManager.FadeIn(ChangeScene);
+        
+        void ChangeScene ()
+        {
+            string sceneName = _gameSessionInfoProvider.CurrentSceneIndex == 1
+                ? GetSceneNameFromBuildIndex(2)
+                : GetSceneNameFromBuildIndex(1);
 
-        _model.ChangeScene(sceneName);
+            _model.ChangeScene(sceneName);
+        }
     }
 
     string GetSceneNameFromBuildIndex (int index)

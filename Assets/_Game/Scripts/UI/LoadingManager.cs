@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -9,59 +8,63 @@ public class LoadingManager : MonoBehaviour
 {
     const string PERCENTAGE_FORMAT = "{0}%";
     const float LOADING_SPEED = 0.5f;
-    const float FADE_DURATION = 0.8f;
     const string START_SCENE = "GameScene1";
     
-    public ApplicationSession ApplicationSession { get; private set; }
-
     [SerializeField] GameObject[] loadingSceneObjects;
     [SerializeField] GameObject[] loadingUIObjects;
-    [SerializeField] CanvasGroup fadeToBlackObject;
     [SerializeField] Button startButton;
     [SerializeField] TextMeshProUGUI loadingNumber;
     [SerializeField] Image loadingFillBar;
+    [SerializeField] FadeToBlackManager fadeToBlackManager;
+    
+    public ApplicationSession ApplicationSession { get; private set; }
 
     float _loadingProgress;
     float _targetProgress;
+    string _newScene;
 
     AsyncOperation _mainSceneLoad;
     AsyncOperation _currentSceneUnload;
-    string _newScene;
 
     void Awake ()
     {
-        if (startButton != null && startButton.gameObject.activeInHierarchy)
+        if (startButton == null || !startButton.gameObject.activeInHierarchy)
         {
-            startButton.onClick.AddListener(() => StartLoading(false));
-            
-            foreach (GameObject obj in loadingUIObjects)
-                obj.SetActive(false);
-            
+            StartLoading(false);
             return;
         }
         
-        StartLoading(false);
+        startButton.onClick.AddListener(() => StartLoading(false));
+        foreach (GameObject obj in loadingUIObjects)
+            obj.SetActive(false);
     }
 
     public void LoadNewScene (string newScene)
     {
-        fadeToBlackObject.alpha = 1;
-        FadeOut().OnComplete(
-        () =>
-            {
-                foreach (GameObject obj in loadingSceneObjects)
-                    obj.SetActive(true);
-                
-                _newScene = newScene;
-                StartLoading(true);
-            }
-        );
+        _currentSceneUnload = SceneManager.UnloadSceneAsync(ApplicationSession.GameSession.CurrentScene);
+        _currentSceneUnload.allowSceneActivation = false;
+        
+        _loadingProgress = 0;
+        UpdateLoadingUI();
+        
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(0));
+        foreach (GameObject obj in loadingSceneObjects)
+            obj.SetActive(true);
+        
+        fadeToBlackManager.FadeOut(CompleteFadeOut);
+
+        void CompleteFadeOut ()
+        {
+            _newScene = newScene;
+            StartLoading(true);
+        }
     }
 
     void StartLoading (bool unloadCurrentScene)
     {
         _loadingProgress = 0;
-        _newScene ??= START_SCENE;
+        if (string.IsNullOrEmpty(_newScene))
+            _newScene = START_SCENE;
         
         if (startButton != null)
             startButton.gameObject.SetActive(false);
@@ -72,7 +75,7 @@ public class LoadingManager : MonoBehaviour
         UpdateLoadingUI();
         
         if (unloadCurrentScene)
-            _currentSceneUnload = SceneManager.UnloadSceneAsync(ApplicationSession.GameSession.CurrentScene);
+            _currentSceneUnload.allowSceneActivation = true;
 
         _mainSceneLoad = SceneManager.LoadSceneAsync(_newScene, LoadSceneMode.Additive);
         StartCoroutine(UpdateLoadingProgress(_mainSceneLoad, _currentSceneUnload));
@@ -113,7 +116,7 @@ public class LoadingManager : MonoBehaviour
         _loadingProgress = 100;
         UpdateLoadingUI();
 
-        FadeIn().OnComplete(() => loadOperation.allowSceneActivation = true);
+        fadeToBlackManager.FadeIn(() => loadOperation.allowSceneActivation = true);
 
         while (!loadOperation.isDone)
             yield return null;
@@ -137,16 +140,5 @@ public class LoadingManager : MonoBehaviour
     {
         loadingNumber.text = string.Format(PERCENTAGE_FORMAT, Mathf.RoundToInt(_loadingProgress));
         loadingFillBar.fillAmount = _loadingProgress / 100;
-    }
-    
-    //TODO pedro: isolate fade to it's own class
-    Tween FadeIn ()
-    {
-        return DOTween.To(() => fadeToBlackObject.alpha, x => fadeToBlackObject.alpha = x, 1, FADE_DURATION);
-    }
-    
-    Tween FadeOut ()
-    {
-        return DOTween.To(() => fadeToBlackObject.alpha, x => fadeToBlackObject.alpha = x, 0, FADE_DURATION);
     }
 }

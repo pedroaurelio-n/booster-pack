@@ -32,9 +32,4 @@ public class CardManagerModel : ICardManagerModel
         int randomUid = _settings.Cards[randomIndex].Uid;
         return GetCardByUid(randomUid);
     }
-
-    public void Dispose ()
-    {
-        Debug.Log($"DISPOSE CARDMANAGER");
-    }
 }

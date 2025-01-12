@@ -50,7 +50,7 @@ public class GameSession : IGameSessionInfoProvider, IDisposable
         GameController = _gameScope.Container.Resolve<GameController>();
         GameController.Initialize();
 
-        GameUIView.FadeOut();
+        GameUIView.FadeToBlackManager.FadeOut(null);
         OnInitializationComplete?.Invoke();
     }
     
@@ -86,7 +86,6 @@ public class GameSession : IGameSessionInfoProvider, IDisposable
 
     public void Dispose ()
     {
-        Debug.Log($"DISPOSE GAME SESSION");
         _gameScope.Dispose();
     }
 }
